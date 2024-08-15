@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IgniteModule } from './libs/ignite/ignite.module';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { IgniteModule } from './libs/ignite/ignite.module';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    IgniteModule
+    IgniteModule,
+    StoreModule.forRoot({}, {}),
+    EffectsModule.forRoot([])
   ],
   providers: [],
   bootstrap: [AppComponent]
