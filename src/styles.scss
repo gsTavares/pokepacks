@@ -1,4 +1,3 @@
-
 @use "igniteui-angular/theming" as *;
 // Uncomment the following lines if you want to add a custom palette:
 // $primary: #731963 !default;
@@ -13,3 +12,41 @@
 // CSS Reset, comment out if not required or using a different module
 @import 'minireset.css/minireset';
 /* You can add global styles to this file, and also import other style files */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --ig-primary-h: 220deg;  /* A vibrant blue for primary */
+    --ig-primary-s: 70%;
+    --ig-primary-l: 50%;
+  
+    --ig-secondary-h: 45deg; /* A golden yellow for secondary */
+    --ig-secondary-s: 85%;
+    --ig-secondary-l: 55%;
+  
+    --ig-gray-h: 0deg; /* A neutral gray */
+    --ig-gray-s: 0%;
+    --ig-gray-l: 60%;
+  
+    --ig-info-h: 195deg; /* A soft cyan for info */
+    --ig-info-s: 100%;
+    --ig-info-l: 60%;
+  
+    --ig-success-h: 120deg; /* A fresh green for success */
+    --ig-success-s: 65%;
+    --ig-success-l: 45%;
+  
+    --ig-warn-h: 30deg; /* A warm orange for warnings */
+    --ig-warn-s: 100%;
+    --ig-warn-l: 55%;
+  
+    --ig-error-h: 0deg; /* A strong red for errors */
+    --ig-error-s: 75%;
+    --ig-error-l: 50%;
+  
+    --ig-surface-h: 210deg; /* A light blue-gray for surfaces */
+    --ig-surface-s: 15%;
+    --ig-surface-l: 95%;
+}
