@@ -1,1 +1,108 @@
-<p>create-pack works!</p>
+<div igxLayout>
+
+    <igx-stepper #stepper [linear]="true">
+        <igx-step #step1 [isValid]="false" [completed]="false">
+            <span igxStepTitle>Nome do baralho</span>
+            <div igxStepContent [tabIndex]="-1" class="flex flex-col">
+                <h3>Novo baralho</h3>
+                <small>dê um nome ao baralho</small>
+
+                <form class="mt-5 flex flex-col gap-3 lg:flex-row">
+                    <igx-input-group type="border" class="grow">
+                        <input igxInput name="name" type="text" />
+                        <label igxLabel for="name">Nome do baralho</label>
+                    </igx-input-group>
+                </form>
+
+                <button class="self-end mt-10" igxButton="contained" igxRipple
+                    (click)="step1.isValid = true; step1.completed = true; stepper.next()">Próximo</button>
+            </div>
+        </igx-step>
+        <igx-step #step2 [isValid]="false" [completed]="false">
+            <span igxStepTitle>Cartas</span>
+            <div igxStepContent [tabIndex]="-1" class="flex flex-col">
+                <header class="flex justify-between items-baseline">
+                    <div>
+                        <h3>Cartas</h3>
+                        <small>escolha suas cartas (mín. 24 máx. 60)</small>
+                    </div>
+                    <div>
+                        <button igxButton="contained" [disabled]="'true'">Criar</button>
+                    </div>
+                </header>
+
+
+                <form class="mt-5 flex flex-col gap-3 flex-wrap lg:flex-row">
+                    <igx-input-group type="border" class="grow">
+                        <input igxInput name="search" type="text" />
+                        <label igxLabel for="search">Pesquisar por nome</label>
+                    </igx-input-group>
+
+                    <igx-select type="border">
+                        <label igxLabel>Type</label>
+                        @for (item of [0, 1, 2, 3]; track $index) {
+                        <igx-select-item [value]="item">{{ item }}</igx-select-item>
+                        }
+                    </igx-select>
+
+                    <igx-select type="border">
+                        <label igxLabel>Subtype</label>
+                        @for (item of [0, 1, 2, 3]; track $index) {
+                        <igx-select-item [value]="item">{{ item }}</igx-select-item>
+                        }
+                    </igx-select>
+                    <igx-select type="border">
+                        <label igxLabel>Supertype</label>
+                        @for (item of [0, 1, 2, 3]; track $index) {
+                        <igx-select-item [value]="item">{{ item }}</igx-select-item>
+                        }
+                    </igx-select>
+                    <igx-select type="border">
+                        <label igxLabel>Rarities</label>
+                        @for (item of [0, 1, 2, 3]; track $index) {
+                        <igx-select-item [value]="item">{{ item }}</igx-select-item>
+                        }
+                    </igx-select>
+                    <button igxButton="contained" igxRipple>Pesquisar</button>
+                </form>
+
+                <div class="grid grid-cols-1 lg:grid-cols-5 gap-5 mt-10">
+                    @for (item of [0, 1, 2, 3, 4, 5, 6]; track $index) {
+                        <igx-card elevated>
+                            <igx-card-media>
+                                <img [src]="'https://images.pokemontcg.io/base1/4_hires.png'" alt="pokemom image">
+                            </igx-card-media>
+                            <igx-card-header>
+                                <h3 igxCardHeaderTitle>pokemom name</h3>
+                                <h5 igxCardHeaderSubtitle>supertype</h5>
+                            </igx-card-header>
+                            <igx-card-content>
+                                <section>
+                                    <small class="block">Types</small>
+                                    <div class="flex gap-3 flex-wrap">
+                                        <igx-chip [selectable]="false" [removable]="false">fire</igx-chip>
+                                    </div>
+                                </section>
+                                <section class="mt-3">
+                                    <small class="block">Subtypes</small>
+                                    <div class="flex gap-3 flex-wrap">
+                                        <igx-chip [selectable]="false" [removable]="false">fire</igx-chip>
+                                    </div>
+                                </section>
+                            </igx-card-content>
+                            <igx-card-actions layout="justify">
+                                <button class="bg-red-600 hover:bg-red-400" igxButton="contained" igxRipple>
+                                    <igx-icon family="material">delete</igx-icon>
+                                </button>
+                                <button igxButton="contained" class="ms-0">
+                                    Adicionar
+                                    <igx-icon family="material">add</igx-icon>
+                                </button>
+                            </igx-card-actions>
+                        </igx-card>
+                    }
+                </div>
+            </div>
+        </igx-step>
+    </igx-stepper>
+</div>
