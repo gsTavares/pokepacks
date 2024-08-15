@@ -1,5 +1,5 @@
 <div igxLayout>
-  <igx-nav-drawer id="navigation" #drawer [pinThreshold]="50000" [isOpen]="true">
+  <igx-nav-drawer id="navigation" #drawer [pinThreshold]="50000" [isOpen]="false">
     <ng-template igxDrawer>
       <nav>
         <span igxDrawerItem [isHeader]="true">Pokepacks</span>
@@ -16,7 +16,9 @@
     <span class="cursor-pointer" igxIconButton="flat" (click)="drawer.toggle()">
       <igx-icon family="material">menu</igx-icon>
     </span>
-    <router-outlet></router-outlet>
+    <section class="py-8">
+      <router-outlet></router-outlet>
+    </section>
   </main>
 </div>
 

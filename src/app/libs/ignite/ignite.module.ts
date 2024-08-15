@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
-import { IgxIconModule, IgxNavigationDrawerModule } from 'igniteui-angular';
+import { IgxButtonModule, IgxCardModule, IgxChipsModule, IgxIconModule, IgxNavigationDrawerModule, IgxRippleModule } from 'igniteui-angular';
 
 
 
 @NgModule({
   exports: [
     IgxNavigationDrawerModule,
-    IgxIconModule
+    IgxIconModule,
+    IgxCardModule,
+    IgxButtonModule,
+    IgxRippleModule,
+    IgxChipsModule
   ]
 })
 export class IgniteModule { }

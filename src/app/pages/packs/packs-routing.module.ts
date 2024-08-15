@@ -1,24 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
+import { PacksComponent } from './packs.component';
 
 const routes: Routes = [
   {
-    path: 'packs', 
-    title: 'Baralhos',
-    loadChildren: () => import('./packs/packs.module').then(m => m.PacksModule)
+    path: 'list',
+    component: PacksComponent
   },
   {
-    path: '', 
-    redirectTo: 'packs',
+    path: '',
+    redirectTo: 'list',
     pathMatch: 'full'
   }
 ];
-
-export { routes };
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class PagesRoutingModule { } 
+export class PacksRoutingModule { }
