@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-packs',
@@ -8,5 +9,13 @@ import { Component } from '@angular/core';
 export class PacksComponent {
 
   packList = [];
+
+  constructor(private router: Router) {
+
+  }
+
+  goToCreatePackPage() {
+    this.router.navigate(['packs/create']);
+  }
   
 }

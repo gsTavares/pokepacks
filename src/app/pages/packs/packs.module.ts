@@ -1,13 +1,15 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { PacksRoutingModule } from './packs-routing.module';
 import { IgniteModule } from '../../libs/ignite/ignite.module';
+import { PacksRoutingModule } from './packs-routing.module';
 import { PacksComponent } from './packs.component';
+import { CreatePackComponent } from './create-pack/create-pack.component';
 
 @NgModule({
   declarations: [
-    PacksComponent
+    PacksComponent,
+    CreatePackComponent
   ],
   imports: [
     CommonModule,

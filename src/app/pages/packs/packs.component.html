@@ -3,7 +3,7 @@
     <h5>crie e personalize seus próprios baralhos com seus pokemons favoritos!</h5>
     @if (packList.length === 0) {
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            <button igxButton="contained" igxRipple>
+            <button igxButton="contained" igxRipple (click)="goToCreatePackPage()">
                 Novo baralho
                 <igx-icon family="material">add</igx-icon>
             </button>
