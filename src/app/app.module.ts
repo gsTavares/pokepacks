@@ -8,6 +8,8 @@ import { IgniteModule } from './libs/ignite/ignite.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { provideHttpClient } from '@angular/common/http';
+import { AppEffects } from './state/app.effects';
+import { pokemonCardsReducer } from './state/app.reducers';
 
 @NgModule({
   declarations: [
@@ -18,8 +20,8 @@ import { provideHttpClient } from '@angular/common/http';
     AppRoutingModule,
     BrowserAnimationsModule,
     IgniteModule,
-    StoreModule.forRoot({}, {}),
-    EffectsModule.forRoot([])
+    StoreModule.forRoot({pokemonCards: pokemonCardsReducer}, {}),
+    EffectsModule.forRoot([AppEffects])
   ],
   providers: [provideHttpClient()],
   bootstrap: [AppComponent]

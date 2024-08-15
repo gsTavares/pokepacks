@@ -18,4 +18,4 @@ type PokemontcgResponse = {
     totalCount: number
 }
 
-export { PokemontcgResponse };
+export { PokemontcgResponse, Pokemontcg };
