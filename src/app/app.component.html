@@ -12,8 +12,8 @@
     </ng-template>
   </igx-nav-drawer>
 
-  <main style="flex-grow: 1;">
-    <span igxIconButton="flat" (click)="drawer.toggle()">
+  <main class="grow-1 min-h-full p-4">
+    <span class="cursor-pointer" igxIconButton="flat" (click)="drawer.toggle()">
       <igx-icon family="material">menu</igx-icon>
     </span>
     <router-outlet></router-outlet>
