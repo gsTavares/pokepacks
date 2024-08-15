@@ -67,26 +67,30 @@
                 </form>
 
                 <div class="grid grid-cols-1 lg:grid-cols-5 gap-5 mt-10">
-                    @for (item of [0, 1, 2, 3, 4, 5, 6]; track $index) {
+                    @for (card of (pokemonCards$ | async); track $index) {
                         <igx-card elevated>
                             <igx-card-media>
-                                <img [src]="'https://images.pokemontcg.io/base1/4_hires.png'" alt="pokemom image">
+                                <img [src]="card.images.large" alt="pokemom image">
                             </igx-card-media>
                             <igx-card-header>
-                                <h3 igxCardHeaderTitle>pokemom name</h3>
-                                <h5 igxCardHeaderSubtitle>supertype</h5>
+                                <h3 igxCardHeaderTitle>{{ card.name }}</h3>
+                                <h5 igxCardHeaderSubtitle>{{ card.supertype }}</h5>
                             </igx-card-header>
                             <igx-card-content>
                                 <section>
                                     <small class="block">Types</small>
                                     <div class="flex gap-3 flex-wrap">
-                                        <igx-chip [selectable]="false" [removable]="false">fire</igx-chip>
+                                        @for (type of card.types; track $index) {
+                                            <igx-chip [selectable]="false" [removable]="false">{{ type }}</igx-chip>
+                                        }
                                     </div>
                                 </section>
                                 <section class="mt-3">
                                     <small class="block">Subtypes</small>
                                     <div class="flex gap-3 flex-wrap">
-                                        <igx-chip [selectable]="false" [removable]="false">fire</igx-chip>
+                                        @for (subtype of card.subtypes; track $index) {
+                                            <igx-chip [selectable]="false" [removable]="false">{{ subtype }}</igx-chip>
+                                        }
                                     </div>
                                 </section>
                             </igx-card-content>
