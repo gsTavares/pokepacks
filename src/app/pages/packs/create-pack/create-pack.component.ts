@@ -1,14 +1,15 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Pack } from '../../../models/pack.models';
-import { LoadingActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from '../../../state/app.actions';
-import { loadingSelector, packsSelector, pokemonCardsSelector, pokemonRaritiesSelector, pokemonSubtypesSelector, pokemonSupertypesSelector, pokemonTypesSelector } from '../../../state/app.selectors';
-import { validateCardQuantity } from '../../../utils/validators/card-quantity.validator';
-import { Pokemontcg } from '../../../models/pokemontcg.models';
-import { combineLatest, map, Observable, Subject, tap } from 'rxjs';
 import { IgxSnackbarComponent, PositionSettings, VerticalAlignment } from 'igniteui-angular';
+import { combineLatest, map, Observable, tap } from 'rxjs';
+import { Pack } from '../../../models/pack.models';
+import { Pokemontcg } from '../../../models/pokemontcg.models';
+import { PacksActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from '../../../state/app.actions';
+import { loadingSelector, packsSelector, pokemonCardsSelector, pokemonRaritiesSelector, pokemonSubtypesSelector, pokemonSupertypesSelector, pokemonTypesSelector } from '../../../state/app.selectors';
 import { PokemonCardsState } from '../../../state/app.state';
+import { validateCardQuantity } from '../../../utils/validators/card-quantity.validator';
 
 @Component({
   selector: 'app-create-pack',
@@ -17,7 +18,7 @@ import { PokemonCardsState } from '../../../state/app.state';
 })
 export class CreatePackComponent implements OnInit {
 
-  @ViewChild('validationSnackbar', {read: IgxSnackbarComponent})
+  @ViewChild('validationSnackbar', { read: IgxSnackbarComponent })
   validationSnackbar!: IgxSnackbarComponent
 
   q: string = '';
@@ -69,7 +70,10 @@ export class CreatePackComponent implements OnInit {
     verticalDirection: VerticalAlignment.Top
   }
 
-  constructor(private store: Store, private cdr: ChangeDetectorRef) {
+  constructor(
+    private store: Store, 
+    private router: Router
+  ) {
 
   }
 
@@ -95,7 +99,7 @@ export class CreatePackComponent implements OnInit {
     this.validationMessage = '';
     const sCards = this.selectedCardsFormControl.value as Pokemontcg[];
     const withSameNameOnPack = sCards.filter(c => c.name === card.name)
-        .map(_ => 1);
+      .map(_ => 1);
 
     let quantity = 0;
 
@@ -121,8 +125,6 @@ export class CreatePackComponent implements OnInit {
   fetchCards(event?: number) {
 
     this.store.dispatch(PokemonCardsActions.clearCards());
-
-    this.cdr.detectChanges();
 
     if (event) {
       this.page = event;
@@ -165,13 +167,13 @@ export class CreatePackComponent implements OnInit {
     const rarity = this.cardRarityFormControl.value;
 
     const query = [
-      { name: 'name', value: name }, 
-      { name: 'types', value: type }, 
-      { name: 'subtypes', value: subtype }, 
-      { name: 'supertype', value: supertype }, 
+      { name: 'name', value: name },
+      { name: 'types', value: type },
+      { name: 'subtypes', value: subtype },
+      { name: 'supertype', value: supertype },
       { name: 'rarity', value: rarity }
     ].filter(part => part.value && part.value !== '')
-    .map(part => `${part.name}:"${part.value}${part.name === 'name' ? '*': ''}"`).join(' ');
+      .map(part => `${part.name}:"${part.value}${part.name === 'name' ? '*' : ''}"`).join(' ');
 
     this.q = query;
 
@@ -179,9 +181,22 @@ export class CreatePackComponent implements OnInit {
 
   }
 
+  createPack() {
+    const payload: Pack = {
+      name: this.packNameFormControl.value,
+      cards: [...this.selectedCardsFormControl.value]
+    };
+
+    this.store.dispatch(PacksActions.createPack({ pack: payload }));
+  }
+
   private subscribeToPacks() {
     this.persistedPacks$.subscribe({
       next: (response) => {
+        if(response.length > this._persistedPacksLastValue.length) {
+          this.router.navigate(['packs/list']);
+          return;
+        }
         this._persistedPacksLastValue = response;
       }
     })

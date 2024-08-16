@@ -30,6 +30,7 @@
                     </div>
                     <div>
                         <button igxButton="contained"
+                            (click)="createPack()"
                             [disabled]="selectedCardsFormControl.valid ? 'false' : 'true'">Criar</button>
                     </div>
                 </header>

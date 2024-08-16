@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
-import { initalState } from "./app.state";
 import { LoadingActions, PacksActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from "./app.actions";
+import { initalState } from "./app.state";
 
 const pokemonCardsReducer = createReducer(
     initalState,
@@ -21,16 +21,25 @@ const packsReducer = createReducer(
         ...state
     })),
     on(PacksActions.createPack, (state, { pack }) => {
+        let toSave;
+
         if(state.packs.length === 0) {
-            pack.id = 1
+            toSave = {
+                ...pack,
+                id: 1
+            }
         } else {
             const lastPackId = state.packs[state.packs.length - 1].id!;
-            pack.id = lastPackId + 1;
+            toSave = {
+                ...pack,
+                id: lastPackId + 1
+            }
         }
 
-        state.packs = [...state.packs, pack];
-
-        return {...state};
+        return {
+            ...state,
+            packs: [...state.packs, toSave]
+        };
     }),
     on(PacksActions.editPack, (state, { pack }) => {
         state.packs[pack.id! - 1] = pack;
@@ -84,4 +93,4 @@ const loadingReducer = createReducer(
     }))
 )
 
-export { pokemonCardsReducer, packsReducer, pokemonTypesReducer, pokemonSubtypesReducer, pokemonSupertypesReducer, pokemonRaritiesReducer, loadingReducer };
+export { loadingReducer, packsReducer, pokemonCardsReducer, pokemonRaritiesReducer, pokemonSubtypesReducer, pokemonSupertypesReducer, pokemonTypesReducer };

@@ -10,7 +10,7 @@ const validateCardQuantity = (): ValidatorFn => {
             return Validators.required
         }
 
-        if (value.length < 23) {
+        if (value.length < 24) {
             return Validators.minLength(24)
         }
 
