@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Pack } from '../../../models/pack.models';
@@ -7,7 +7,7 @@ import { loadingSelector, packsSelector, pokemonCardsSelector, pokemonRaritiesSe
 import { validateCardQuantity } from '../../../utils/validators/card-quantity.validator';
 import { Pokemontcg } from '../../../models/pokemontcg.models';
 import { combineLatest, map, Observable, Subject, tap } from 'rxjs';
-import { PositionSettings, VerticalAlignment } from 'igniteui-angular';
+import { IgxSnackbarComponent, PositionSettings, VerticalAlignment } from 'igniteui-angular';
 import { PokemonCardsState } from '../../../state/app.state';
 
 @Component({
@@ -16,6 +16,9 @@ import { PokemonCardsState } from '../../../state/app.state';
   styleUrl: './create-pack.component.scss'
 })
 export class CreatePackComponent implements OnInit {
+
+  @ViewChild('validationSnackbar', {read: IgxSnackbarComponent})
+  validationSnackbar!: IgxSnackbarComponent
 
   q: string = '';
   page: number = 0;
@@ -60,6 +63,8 @@ export class CreatePackComponent implements OnInit {
 
   loading$ = this.store.select(loadingSelector);
 
+  validationMessage: string = '';
+
   snackbarPositionSettings: PositionSettings = {
     verticalDirection: VerticalAlignment.Top
   }
@@ -87,15 +92,21 @@ export class CreatePackComponent implements OnInit {
   }
 
   selectCard(card: Pokemontcg) {
+    this.validationMessage = '';
     const sCards = this.selectedCardsFormControl.value as Pokemontcg[];
+    const withSameNameOnPack = sCards.filter(c => c.name === card.name)
+        .map(_ => 1);
 
-    if (sCards.length > 0) {
-      const withSameNameOnPack = sCards.filter(c => c.name === card.name)
-        .map(_ => 1)
-        .reduce((a, b) => a + b) + 1;
+    let quantity = 0;
 
-      if (withSameNameOnPack === 4) return;
+    if (withSameNameOnPack.length > 0) {
+      quantity = withSameNameOnPack.reduce((a, b) => a + b);
+    }
 
+    if (quantity === 4) {
+      this.validationMessage = 'Só podem ter 4 cartas com o mesmo nome no baralho';
+      this.validationSnackbar.open();
+      return;
     }
 
     this.selectedCardsFormControl.patchValue([...sCards, card]);

@@ -75,6 +75,7 @@
 
 
                 <igx-snackbar [autoHide]="false" [positionSettings]="snackbarPositionSettings" [isVisible]="loading$ | async">Carregando...</igx-snackbar>
+                <igx-snackbar #validationSnackbar [positionSettings]="snackbarPositionSettings">{{ validationMessage }}</igx-snackbar>
 
                 @if(pokemonCards$ | async; as pokemonCards) {
                     <div class="grid grid-cols-1 lg:grid-cols-5 gap-5 mt-10">
