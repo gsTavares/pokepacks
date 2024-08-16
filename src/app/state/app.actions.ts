@@ -8,7 +8,7 @@ const PokemonCardsActions = createActionGroup({
         'Fetch Cards': props<{ q: string, page: number, pageSize: number }>(),
         'Select Card': props<{ cardId: string, packId?: number }>(),
         'Remove Card': props<{ cardId: string, packId?: number }>(),
-        'Get Cards': props<{cards: Pokemontcg[]}>()
+        'Get Cards': props<{cards: Pokemontcg[], totalCount: number}>()
     }
 });
 
@@ -16,7 +16,7 @@ const PacksActions = createActionGroup({
     source: 'packs',
     events: {
         'Create Pack': props<{ pack: Pack }>(),
-        'Edit Pack': props<{ data: Pack }>(),
+        'Edit Pack': props<{ pack: Pack }>(),
         'Delete pack': props<{ packId: number }>(),
         'Get All Packs': props<any>(),
     }
