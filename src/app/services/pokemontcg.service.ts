@@ -26,4 +26,20 @@ export class PokemontcgService {
     return this.http.get<PokemontcgResponse>(`${environment.target}/cards`, { params: reqParams });
   }
 
+  getTypes() {
+    return this.http.get<{data: string[]}>(`${environment.target}/types`);
+  }
+
+  getSubtypes() {
+    return this.http.get<{data: string[]}>(`${environment.target}/subtypes`);
+  }
+
+  getSupertypes() {
+    return this.http.get<{data: string[]}>(`${environment.target}/supertypes`);
+  }
+
+  getRarities() {
+    return this.http.get<{data: string[]}>(`${environment.target}/rarities`);
+  }
+
 }

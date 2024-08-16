@@ -43,26 +43,26 @@
 
                     <igx-select type="border">
                         <label igxLabel>Type</label>
-                        @for (item of [0, 1, 2, 3]; track $index) {
+                        @for (item of (types$ | async); track $index) {
                             <igx-select-item [value]="item">{{ item }}</igx-select-item>
                         }
                     </igx-select>
 
                     <igx-select type="border">
                         <label igxLabel>Subtype</label>
-                        @for (item of [0, 1, 2, 3]; track $index) {
+                        @for (item of (subtypes$ | async); track $index) {
                             <igx-select-item [value]="item">{{ item }}</igx-select-item>
                         }
                     </igx-select>
                     <igx-select type="border">
                         <label igxLabel>Supertype</label>
-                        @for (item of [0, 1, 2, 3]; track $index) {
+                        @for (item of (supertypes$ | async); track $index) {
                             <igx-select-item [value]="item">{{ item }}</igx-select-item>
                         }
                     </igx-select>
                     <igx-select type="border">
                         <label igxLabel>Rarities</label>
-                        @for (item of [0, 1, 2, 3]; track $index) {
+                        @for (item of (rarities$ | async); track $index) {
                             <igx-select-item [value]="item">{{ item }}</igx-select-item>
                         }
                     </igx-select>

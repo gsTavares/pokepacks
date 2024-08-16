@@ -9,7 +9,7 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { provideHttpClient } from '@angular/common/http';
 import { AppEffects } from './state/app.effects';
-import { packsReducer, pokemonCardsReducer } from './state/app.reducers';
+import { packsReducer, pokemonCardsReducer, pokemonRaritiesReducer, pokemonSubtypesReducer, pokemonSupertypesReducer, pokemonTypesReducer } from './state/app.reducers';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,15 @@ import { packsReducer, pokemonCardsReducer } from './state/app.reducers';
     AppRoutingModule,
     BrowserAnimationsModule,
     IgniteModule,
-    StoreModule.forRoot({pokemonCards: pokemonCardsReducer, packs: packsReducer}, {}),
+    StoreModule.forRoot(
+      {
+        pokemonCards: pokemonCardsReducer, 
+        packs: packsReducer, 
+        pokemonTypes: pokemonTypesReducer,
+        pokemonSubtypes: pokemonSubtypesReducer, 
+        pokemonSupertypes: pokemonSupertypesReducer, 
+        pokemonRarities: pokemonRaritiesReducer
+      }, {}),
     EffectsModule.forRoot([AppEffects])
   ],
   providers: [provideHttpClient()],

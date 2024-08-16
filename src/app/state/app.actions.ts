@@ -25,9 +25,41 @@ const PacksActions = createActionGroup({
 const SelectedPackActions = createActionGroup({
     source: '[selectedPack]',
     events: {
-        '[selectedPack] Get Selected Pack': props<any>(),
-        '[selectedPack] Set Selected Pack': props<{ packId: number }>
+        'Get Selected Pack': props<any>(),
+        'Set Selected Pack': props<{ packId: number }>
     }
 });
 
-export { PokemonCardsActions, PacksActions, SelectedPackActions }
+const PokemonTypesActions = createActionGroup({
+    source: '[pokemonTypes]',
+    events: {
+        'Fetch Pokemon Types': props<any>(),
+        'Get Pokemon Types': props<{ pokemonTypes: string[] }>(),
+    }
+});
+
+const PokemonSubtypesActions = createActionGroup({
+    source: '[pokemonSubtypes]',
+    events: {
+        'Fetch Pokemon Subtypes': props<any>(),
+        'Get Pokemon Subtypes': props<{ pokemonSubtypes: string[] }>(),
+    }
+});
+
+const PokemonSupertypesActions = createActionGroup({
+    source: '[pokemonSupertypes]',
+    events: {
+        'Fetch Pokemon Supertypes': props<any>(),
+        'Get Pokemon Supertypes': props<{ pokemonSupertypes: string[] }>(),
+    }
+});
+
+const PokemonRaritiesActions = createActionGroup({
+    source: '[pokemonRarities]',
+    events: {
+        'Fetch Pokemon Rarities': props<any>(),
+        'Get Pokemon Rarities': props<{ pokemonRarities: string[] }>(),
+    }
+});
+
+export { PokemonCardsActions, PacksActions, SelectedPackActions, PokemonTypesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonRaritiesActions }

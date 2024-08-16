@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Pack } from '../../../models/pack.models';
-import { PokemonCardsActions } from '../../../state/app.actions';
-import { packsSelector, pokemonCardsSelector } from '../../../state/app.selectors';
+import { PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from '../../../state/app.actions';
+import { packsSelector, pokemonCardsSelector, pokemonRaritiesSelector, pokemonSubtypesSelector, pokemonSupertypesSelector, pokemonTypesSelector } from '../../../state/app.selectors';
 import { validateCardQuantity } from '../../../utils/validators/card-quantity.validator';
 import { Pokemontcg } from '../../../models/pokemontcg.models';
 
@@ -28,7 +28,12 @@ export class CreatePackComponent implements OnInit {
 
   // Cards step
   cardSearchFormControl: FormControl = new FormControl('');
-  selectedCardsFormControl: FormControl = new FormControl([], validateCardQuantity())
+  selectedCardsFormControl: FormControl = new FormControl([], validateCardQuantity());
+
+  types$ = this.store.select(pokemonTypesSelector);
+  subtypes$ = this.store.select(pokemonSubtypesSelector);
+  supertypes$ = this.store.select(pokemonSupertypesSelector);
+  rarities$ = this.store.select(pokemonRaritiesSelector);
 
   perPageOptions = [5, 10, 20, 50, 100, 250];
 
@@ -39,6 +44,10 @@ export class CreatePackComponent implements OnInit {
   ngOnInit(): void {
     this.subscribeToPacks();
     this.fetchCards();
+    this.fetchTypes();
+    this.fetchSubtypes();
+    this.fetchSupertypes();
+    this.fetchRarities();
   }
 
   isCardAlreadySelected(card: Pokemontcg): boolean {
@@ -81,6 +90,22 @@ export class CreatePackComponent implements OnInit {
       pageSize: this.pageSize,
       q: this.q
     }));
+  }
+
+  fetchTypes() {
+    this.store.dispatch(PokemonTypesActions.fetchPokemonTypes());
+  }
+
+  fetchSubtypes() {
+    this.store.dispatch(PokemonSubtypesActions.fetchPokemonSubtypes());
+  }
+
+  fetchSupertypes() {
+    this.store.dispatch(PokemonSupertypesActions.fetchPokemonSupertypes());
+  } 
+  
+  fetchRarities() {
+    this.store.dispatch(PokemonRaritiesActions.fetchPokemonRarities());
   }
 
   private subscribeToPacks() {
