@@ -8,7 +8,8 @@ const PokemonCardsActions = createActionGroup({
         'Fetch Cards': props<{ q: string, page: number, pageSize: number }>(),
         'Select Card': props<{ cardId: string, packId?: number }>(),
         'Remove Card': props<{ cardId: string, packId?: number }>(),
-        'Get Cards': props<{cards: Pokemontcg[], totalCount: number}>()
+        'Get Cards': props<{cards: Pokemontcg[], totalCount: number}>(),
+        'Clear Cards': props<any>(),
     }
 });
 
@@ -62,4 +63,11 @@ const PokemonRaritiesActions = createActionGroup({
     }
 });
 
-export { PokemonCardsActions, PacksActions, SelectedPackActions, PokemonTypesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonRaritiesActions }
+const LoadingActions = createActionGroup({
+    source: '[loading]',
+    events: {
+        'Set Loading': props<{ loadingValue: boolean }>(),
+    }
+})
+
+export { PokemonCardsActions, PacksActions, SelectedPackActions, PokemonTypesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonRaritiesActions, LoadingActions }

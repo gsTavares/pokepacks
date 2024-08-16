@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Pack } from '../../../models/pack.models';
-import { PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from '../../../state/app.actions';
-import { packsSelector, pokemonCardsSelector, pokemonRaritiesSelector, pokemonSubtypesSelector, pokemonSupertypesSelector, pokemonTypesSelector } from '../../../state/app.selectors';
+import { LoadingActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from '../../../state/app.actions';
+import { loadingSelector, packsSelector, pokemonCardsSelector, pokemonRaritiesSelector, pokemonSubtypesSelector, pokemonSupertypesSelector, pokemonTypesSelector } from '../../../state/app.selectors';
 import { validateCardQuantity } from '../../../utils/validators/card-quantity.validator';
 import { Pokemontcg } from '../../../models/pokemontcg.models';
+import { combineLatest, map, Observable, Subject, tap } from 'rxjs';
+import { PositionSettings, VerticalAlignment } from 'igniteui-angular';
+import { PokemonCardsState } from '../../../state/app.state';
 
 @Component({
   selector: 'app-create-pack',
@@ -17,8 +20,14 @@ export class CreatePackComponent implements OnInit {
   q: string = '';
   page: number = 0;
   pageSize: number = 20;
+  totalCount: number = 0;
 
-  pokemonCards$ = this.store.select(pokemonCardsSelector);
+  pokemonCards$ = this.store.select(pokemonCardsSelector).pipe(tap(response => {
+    if (response.totalCount > 0) {
+      this.totalCount = response.totalCount
+    }
+  }));
+
   persistedPacks$ = this.store.select(packsSelector);
 
   private _persistedPacksLastValue: Pack[] = [];
@@ -28,6 +37,10 @@ export class CreatePackComponent implements OnInit {
 
   // Cards step
   cardSearchFormControl: FormControl = new FormControl('');
+  cardTypeFormControl: FormControl = new FormControl('');
+  cardSubtypeFormControl: FormControl = new FormControl('');
+  cardSupertypeFormControl: FormControl = new FormControl('');
+  cardRarityFormControl: FormControl = new FormControl('');
   selectedCardsFormControl: FormControl = new FormControl([], validateCardQuantity());
 
   types$ = this.store.select(pokemonTypesSelector);
@@ -35,13 +48,28 @@ export class CreatePackComponent implements OnInit {
   supertypes$ = this.store.select(pokemonSupertypesSelector);
   rarities$ = this.store.select(pokemonRaritiesSelector);
 
+  data$?: Observable<{
+    pokemonCards: PokemonCardsState,
+    types: string[],
+    subtypes: string[],
+    supertypes: string[],
+    rarities: string[]
+  }>
+
   perPageOptions = [5, 10, 20, 50, 100, 250];
 
-  constructor(private store: Store) {
+  loading$ = this.store.select(loadingSelector);
+
+  snackbarPositionSettings: PositionSettings = {
+    verticalDirection: VerticalAlignment.Top
+  }
+
+  constructor(private store: Store, private cdr: ChangeDetectorRef) {
 
   }
 
   ngOnInit(): void {
+    this.subscribeToData();
     this.subscribeToPacks();
     this.fetchCards();
     this.fetchTypes();
@@ -55,18 +83,18 @@ export class CreatePackComponent implements OnInit {
     if (sCards.length === 0) {
       return false
     }
-    return sCards.includes(card);
+    return sCards.some(c => c.id === card.id);
   }
 
   selectCard(card: Pokemontcg) {
     const sCards = this.selectedCardsFormControl.value as Pokemontcg[];
 
-    if(sCards.length > 0) {
+    if (sCards.length > 0) {
       const withSameNameOnPack = sCards.filter(c => c.name === card.name)
         .map(_ => 1)
         .reduce((a, b) => a + b) + 1;
 
-      if(withSameNameOnPack === 4) return;
+      if (withSameNameOnPack === 4) return;
 
     }
 
@@ -81,7 +109,11 @@ export class CreatePackComponent implements OnInit {
 
   fetchCards(event?: number) {
 
-    if(event) {
+    this.store.dispatch(PokemonCardsActions.clearCards());
+
+    this.cdr.detectChanges();
+
+    if (event) {
       this.page = event;
     }
 
@@ -102,10 +134,38 @@ export class CreatePackComponent implements OnInit {
 
   fetchSupertypes() {
     this.store.dispatch(PokemonSupertypesActions.fetchPokemonSupertypes());
-  } 
-  
+  }
+
   fetchRarities() {
     this.store.dispatch(PokemonRaritiesActions.fetchPokemonRarities());
+  }
+
+  applyFilter() {
+
+    this.page = 0;
+    this.totalCount = 0;
+
+    this.q = '';
+
+    const name = this.cardSearchFormControl.value;
+    const type = this.cardTypeFormControl.value;
+    const subtype = this.cardSubtypeFormControl.value;
+    const supertype = this.cardSupertypeFormControl.value;
+    const rarity = this.cardRarityFormControl.value;
+
+    const query = [
+      { name: 'name', value: name }, 
+      { name: 'types', value: type }, 
+      { name: 'subtypes', value: subtype }, 
+      { name: 'supertype', value: supertype }, 
+      { name: 'rarity', value: rarity }
+    ].filter(part => part.value && part.value !== '')
+    .map(part => `${part.name}:"${part.value}${part.name === 'name' ? '*': ''}"`).join(' ');
+
+    this.q = query;
+
+    this.fetchCards();
+
   }
 
   private subscribeToPacks() {
@@ -114,6 +174,24 @@ export class CreatePackComponent implements OnInit {
         this._persistedPacksLastValue = response;
       }
     })
+  }
+
+  private subscribeToData() {
+    this.data$ = combineLatest([
+      this.pokemonCards$,
+      this.types$,
+      this.subtypes$,
+      this.supertypes$,
+      this.rarities$
+    ]).pipe(
+      map(([cards, types, subtypes, supertypes, rarities]) => ({
+        pokemonCards: cards,
+        rarities: rarities,
+        subtypes: subtypes,
+        types: types,
+        supertypes: supertypes
+      }))
+    );
   }
 
 }

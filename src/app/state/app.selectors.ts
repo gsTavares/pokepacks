@@ -7,6 +7,7 @@ const pokemonTypesFeatureSelector = createFeatureSelector<State>('pokemonTypes')
 const pokemonSubtypesFeatureSelector = createFeatureSelector<State>('pokemonSubtypes');
 const pokemonSupertypesFeatureSelector = createFeatureSelector<State>('pokemonSupertypes');
 const pokemonRaritiesFeatureSelector = createFeatureSelector<State>('pokemonRarities');
+const loadingFeatureSelector = createFeatureSelector<State>('loading');
 
 const pokemonCardsSelector = createSelector(
     pokemonCardsFeatureSelector,
@@ -38,4 +39,9 @@ const pokemonRaritiesSelector = createSelector(
     (state) => state.pokemonRarities
 );
 
-export { pokemonCardsSelector, packsSelector, pokemonTypesSelector, pokemonSubtypesSelector, pokemonSupertypesSelector, pokemonRaritiesSelector };
+const loadingSelector = createSelector(
+    loadingFeatureSelector,
+    (state) => state.loading
+)
+
+export { pokemonCardsSelector, packsSelector, pokemonTypesSelector, pokemonSubtypesSelector, pokemonSupertypesSelector, pokemonRaritiesSelector, loadingSelector };

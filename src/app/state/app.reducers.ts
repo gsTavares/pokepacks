@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { initalState } from "./app.state";
-import { PacksActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from "./app.actions";
+import { LoadingActions, PacksActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from "./app.actions";
 
 const pokemonCardsReducer = createReducer(
     initalState,
@@ -8,6 +8,10 @@ const pokemonCardsReducer = createReducer(
         ...state,
         pokemonCards: {cards: cards, totalCount: totalCount},
         totalPokemonCardCount: totalCount
+    })),
+    on(PokemonCardsActions.clearCards, (state, _) => ({
+        ...state,
+        pokemonCards: {cards: [], totalCount: 0}
     }))
 )
 
@@ -72,4 +76,12 @@ const pokemonRaritiesReducer = createReducer(
     }))
 )
 
-export { pokemonCardsReducer, packsReducer, pokemonTypesReducer, pokemonSubtypesReducer, pokemonSupertypesReducer, pokemonRaritiesReducer };
+const loadingReducer = createReducer(
+    initalState,
+    on(LoadingActions.setLoading, (state, { loadingValue }) => ({
+        ...state,
+        loading: loadingValue
+    }))
+)
+
+export { pokemonCardsReducer, packsReducer, pokemonTypesReducer, pokemonSubtypesReducer, pokemonSupertypesReducer, pokemonRaritiesReducer, loadingReducer };

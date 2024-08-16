@@ -1,8 +1,12 @@
 import { Pack } from "../models/pack.models"
 import { Pokemontcg } from "../models/pokemontcg.models"
 
+type PokemonCardsState = {
+    cards: Pokemontcg[], totalCount: number
+}
+
 type State = {
-    pokemonCards: {cards: Pokemontcg[], totalCount: number},
+    pokemonCards: PokemonCardsState,
     pokemonTypes: string[],
     pokemonSubtypes: string[],
     pokemonSupertypes: string[],
@@ -10,6 +14,8 @@ type State = {
     
     packs: Pack[],
     selectedPack?: Pack,
+
+    loading: boolean;
 }
 
 const initalState: State = {
@@ -20,6 +26,8 @@ const initalState: State = {
     pokemonTypes: [],
 
     packs: [],
+
+    loading: false
 }
 
-export { State, initalState };
+export { State, initalState, PokemonCardsState };

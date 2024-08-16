@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { IgxButtonModule, IgxCardModule, IgxChipsModule, IgxIconModule, IgxInputGroupModule, IgxNavigationDrawerModule, IgxPaginatorModule, IgxRippleModule, IgxSelectModule, IgxStepperModule, IgxToastModule } from 'igniteui-angular';
+import { IgxButtonModule, IgxCardModule, IgxChipsModule, IgxIconModule, IgxInputGroupModule, IgxNavigationDrawerModule, IgxOverlayOutletDirective, IgxPaginatorModule, IgxRippleModule, IgxSelectModule, IgxSnackbarModule, IgxStepperModule, IgxToastModule } from 'igniteui-angular';
 
 
 
@@ -15,7 +15,7 @@ import { IgxButtonModule, IgxCardModule, IgxChipsModule, IgxIconModule, IgxInput
     IgxStepperModule,
     IgxSelectModule,
     IgxPaginatorModule,
-    IgxToastModule
+    IgxSnackbarModule
   ]
 })
 export class IgniteModule { }
