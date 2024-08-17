@@ -13,7 +13,7 @@ type State = {
     pokemonRarities: string[],
     
     packs: Pack[],
-    selectedPack?: Pack,
+    selectedPack: Pack,
 
     loading: boolean;
     message: string
@@ -27,6 +27,7 @@ const initalState: State = {
     pokemonTypes: [],
 
     packs: [],
+    selectedPack: {} as Pack,
 
     loading: false,
     message: ''

@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import { LoadingActions, MessageActions, PacksActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from "./app.actions";
+import { LoadingActions, MessageActions, PacksActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions, SelectedPackActions } from "./app.actions";
 import { initalState } from "./app.state";
 import { Pack } from "../models/pack.models";
 
@@ -41,10 +41,16 @@ const packsReducer = createReducer(
             packs: [...state.packs, toSave]
         };
     }),
-    on(PacksActions.editPack, (state, { pack }) => {
-        state.packs[pack.id! - 1] = pack;
+    on(PacksActions.editPackSuccessfully, (state, { pack }) => {
+        const toEditIndex = pack.id! - 1;
+        
+        const packWithUpdatedAt: Pack = {...pack, updatedAt: new Date()};
 
-        return {...state};
+        return {
+            ...state,
+            // get elements before the toEditIdex    add editted item     copy the rest of array after toEditIndex
+            packs: [...state.packs.slice(0, toEditIndex), packWithUpdatedAt, ...state.packs.slice(toEditIndex + 1)]
+        };
     }),
     on(PacksActions.deletePackSuccessfully, (state, {packId}) => ({
         ...state,
@@ -100,4 +106,12 @@ const messageReducer = createReducer(
     }))
 )
 
-export { loadingReducer, packsReducer, pokemonCardsReducer, pokemonRaritiesReducer, pokemonSubtypesReducer, pokemonSupertypesReducer, pokemonTypesReducer, messageReducer };
+const selectedPackReducer = createReducer(
+    initalState,
+    on(SelectedPackActions.setSelectedPack, (state, { pack }) => ({
+        ...state,
+        selectedPack: pack
+    })),
+)
+
+export { loadingReducer, packsReducer, pokemonCardsReducer, pokemonRaritiesReducer, pokemonSubtypesReducer, pokemonSupertypesReducer, pokemonTypesReducer, messageReducer, selectedPackReducer };

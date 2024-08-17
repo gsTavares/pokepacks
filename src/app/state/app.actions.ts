@@ -19,6 +19,7 @@ const PacksActions = createActionGroup({
         'Create Pack': props<{ pack: Pack }>(),
         'Create Pack Successfully': props<{ pack: Pack }>(),
         'Edit Pack': props<{ pack: Pack }>(),
+        'Edit Pack Successfully': props<{ pack: Pack }>(),
         'Delete pack': props<{ packId: number }>(),
         'Delete Pack Successfully': props<{ packId: number }>(),
     }
@@ -27,7 +28,7 @@ const PacksActions = createActionGroup({
 const SelectedPackActions = createActionGroup({
     source: '[selectedPack]',
     events: {
-        'Set Selected Pack': props<{ packId: number }>
+        'Set Selected Pack': props<{ pack: Pack }>()
     }
 });
 

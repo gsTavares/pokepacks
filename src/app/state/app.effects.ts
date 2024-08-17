@@ -98,6 +98,17 @@ class AppEffects {
         )
     ));
 
+    editPack$ = createEffect(() => this.actions$.pipe(
+        ofType(PacksActions.editPack),
+        exhaustMap(({ pack }) => of(pack)
+            .pipe(
+                tap((response) => this.store.dispatch(MessageActions.setMessage({ message: `Baralho #${response.id} atualizado com sucesso!` }))),
+                map(response => PacksActions.editPackSuccessfully({ pack: response })),
+                catchError(() => EMPTY)
+            )
+        )
+    ));
+
     deletePack$ = createEffect(() => this.actions$.pipe(
         ofType(PacksActions.deletePack),
         exhaustMap(({ packId }) => of(packId)
