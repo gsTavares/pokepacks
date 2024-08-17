@@ -1,0 +1,40 @@
+<div class="relative">
+    <div class="absolute -top-3 -right-3">
+        <button igxIconButton="contained">
+            {{ pack.cards.length }}
+        </button>
+    </div>
+    <igx-card [horizontal]="true" class="grid grid-cols-1 lg:grid-cols-2 bg-zinc-900">
+        <igx-card-header class="lg:col-span-2">
+            <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+                <igx-card-media>
+                    <img [src]="firstCardImageOfMainType" loading="lazy">
+                </igx-card-media>
+                <section class="flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-white" igxCardHeaderTitle># {{ pack.id }}</h3>
+                        <h5 class="text-white" igxCardHeaderSubtitle>{{ pack.name }}</h5>
+                    </div>
+                    <div>
+                        <p class="font-bold m-0 text-white">Tipo principal</p>
+                        <div class="flex">
+                            <igx-chip [removable]="false" [selectable]="false" [ngClass]="mainType.toLowerCase()">{{ mainType }}</igx-chip>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </igx-card-header>
+        <igx-card-content class="grid grid-cols-1 gap-1 lg:gap-3 lg:grid-cols-2 lg:col-span-2 text-white">
+            <p><b>Criado em: </b>{{ pack.createdAt | date: 'd/M/Y HH:mm:ss' }}</p>
+            @if(pack.updatedAt) {
+                <p><b>Atualizado em:</b>{{ pack.updatedAt | date: 'd/M/Y HH:mm:ss' }}</p>
+            }
+        </igx-card-content>
+        <igx-card-actions class="lg:col-span-2 flex-row" layout="justify">
+            <button class="w-full" igxStart igxButton="contained" igxRipple>
+                Ver detalhes
+                <igx-icon family="material">receipt_long</igx-icon>
+            </button>
+        </igx-card-actions>
+    </igx-card>
+</div>
