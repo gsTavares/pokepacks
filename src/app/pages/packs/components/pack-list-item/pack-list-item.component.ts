@@ -1,5 +1,7 @@
 import { Component, Input, input, OnInit } from '@angular/core';
 import { Pack } from '../../../../models/pack.models';
+import { Store } from '@ngrx/store';
+import { PacksActions } from '../../../../state/app.actions';
 
 @Component({
   selector: 'app-pack-list-item',
@@ -21,7 +23,7 @@ export class PackListItemComponent implements OnInit {
   pokemonQuantity: number = 0;
   trainerQuantity: number = 0;
 
-  constructor() {
+  constructor(private store: Store) {
 
   }
 
@@ -43,7 +45,7 @@ export class PackListItemComponent implements OnInit {
       for(let type of card.types) {
         typeSet.add(type)
       }
-      
+
     }
 
     this.uniqueTypes = typeSet.size;
@@ -62,6 +64,10 @@ export class PackListItemComponent implements OnInit {
 
     this.packTypes = [...typeSet];
 
+  }
+
+  deletePack() {
+    this.store.dispatch(PacksActions.deletePack({packId: this.pack.id!}));
   }
 
 }

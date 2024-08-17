@@ -18,7 +18,7 @@ const pokemonCardsReducer = createReducer(
 
 const packsReducer = createReducer(
     initalState,
-    on(PacksActions.createPack, (state, { pack }) => {
+    on(PacksActions.createPackSuccessfully, (state, { pack }) => {
         let toSave: Pack;
 
         if(state.packs.length === 0) {
@@ -46,11 +46,10 @@ const packsReducer = createReducer(
 
         return {...state};
     }),
-    on(PacksActions.deletePack, (state, {packId}) => {
-        state.packs = state.packs.filter(p => p.id !== packId);
-
-        return {...state};
-    })
+    on(PacksActions.deletePackSuccessfully, (state, {packId}) => ({
+        ...state,
+        packs: [...state.packs.filter(p => p.id !== packId)]
+    }))
 )
 
 const pokemonTypesReducer = createReducer(

@@ -20,6 +20,7 @@ const PacksActions = createActionGroup({
         'Create Pack Successfully': props<{ pack: Pack }>(),
         'Edit Pack': props<{ pack: Pack }>(),
         'Delete pack': props<{ packId: number }>(),
+        'Delete Pack Successfully': props<{ packId: number }>(),
     }
 });
 

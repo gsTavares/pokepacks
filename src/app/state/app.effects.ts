@@ -96,8 +96,18 @@ class AppEffects {
                 catchError(() => EMPTY)
             )
         )
-    ))
+    ));
 
+    deletePack$ = createEffect(() => this.actions$.pipe(
+        ofType(PacksActions.deletePack),
+        exhaustMap(({ packId }) => of(packId)
+            .pipe(
+                tap((response) => this.store.dispatch(MessageActions.setMessage({ message: `Baralho #${response} removido com sucesso!` }))),
+                map(response => PacksActions.deletePackSuccessfully({ packId: response })),
+                catchError(() => EMPTY)
+            )
+        )
+    ));
 }
 
 export { AppEffects };

@@ -4,6 +4,12 @@
             {{ pack.cards.length }}
         </button>
     </div>
+    <div class="absolute top-8 -right-3">
+        <button igxIconButton="contained" class="bg-red-600 hover:bg-red-400"
+            (click)="deleteWarning.open()">
+            <igx-icon class="text-white" family="material">delete</igx-icon>
+        </button>
+    </div>
     <igx-card [horizontal]="true" class="grid grid-cols-1 lg:grid-cols-2 bg-zinc-900">
         <igx-card-header class="lg:col-span-2">
             <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
@@ -62,8 +68,19 @@
                 </div>
             </section>
             <footer igxDialogActions>
-                <button class="bg-red-600 hover:bg-red-600" igxRipple igxButton="contained" (click)="packDetails.close()">Fechar</button>
+                <button class="bg-red-600 hover:bg-red-400" igxRipple igxButton="contained" (click)="packDetails.close()">Fechar</button>
             </footer>
         </div>
+    </igx-dialog>
+
+    <igx-dialog #deleteWarning
+        [closeOnEscape]="false"
+        [closeOnOutsideSelect]="false"
+        title="Aviso"
+        message="Deseja realmente excluir este baralho?">
+        <footer igxDialogActions>
+            <button class="bg-red-600 hover:bg-red-400" igxRipple igxButton="contained" (click)="deleteWarning.close()">Não</button>
+            <button igxRipple igxButton="contained" (click)="deletePack(); deleteWarning.close()">Sim</button>
+        </footer>
     </igx-dialog>
 </div>
