@@ -1,0 +1,45 @@
+<igx-card elevated class="h-full">
+    <igx-card-media>
+        <img [src]="card.images.large" loading="lazy" alt="pokemom image">
+    </igx-card-media>
+    <igx-card-header>
+        <h3 igxCardHeaderTitle>{{ card.name }}</h3>
+        <h5 igxCardHeaderSubtitle>{{ card.supertype }}</h5>
+    </igx-card-header>
+    <igx-card-content>
+        <section>
+            <small class="block">Tipos</small>
+            <div class="flex gap-3 flex-wrap">
+                @for (type of card.types; track $index) {
+                    <igx-chip [selectable]="false" [removable]="false" class="hover:bg-transparent" [ngClass]="type.toLowerCase()">{{ type }}</igx-chip>
+                } @empty {
+                    <igx-chip [selectable]="false" [removable]="false">N/A</igx-chip>
+                }
+            </div>
+        </section>
+        <section class="mt-3">
+            <small class="block">Subtipos</small>
+            <div class="flex gap-3 flex-wrap">
+                @for (subtype of card.subtypes; track $index) {
+                    <igx-chip [selectable]="false" [removable]="false">{{ subtype }}</igx-chip>
+                } @empty {
+                    <igx-chip [selectable]="false" [removable]="false">N/A</igx-chip>
+                }
+            </div>
+        </section>
+    </igx-card-content>
+    <igx-card-actions layout="justify">
+        @if (isCardAlreadySelected(card)) {
+            <button class="bg-red-600 hover:bg-red-400" igxButton="contained" igxRipple
+                (click)="removeCard(card.id)">
+                Remover
+                <igx-icon family="material">close</igx-icon>
+            </button>
+        } @else {
+            <button igxButton="contained" [disabled]="selectedCardsFormControl.value.length === 60 ? 'true' : 'false'" igxRipple (click)="selectCard(card)">
+                Adicionar
+                <igx-icon family="material">add</igx-icon>
+            </button>
+        }
+    </igx-card-actions>
+</igx-card>

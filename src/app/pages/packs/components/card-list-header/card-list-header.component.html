@@ -1,0 +1,55 @@
+@if(filterData$ | async; as filterData) {
+    <header class="flex justify-between items-baseline">
+        <div class="relative">
+            <h3>Cartas</h3>
+            <small>escolha suas cartas (mín. 24 máx. 60)</small>
+            <button class="absolute top-10 left-[65%]"
+                [ngClass]="{'bg-red-600': selectedCardsFormControl.invalid, 'bg-green-600': selectedCardsFormControl.valid}"
+                igxIconButton="contained">{{ selectedCardsFormControl.value.length }}</button>
+        </div>
+        <div>
+            <button igxButton="contained"
+                (click)="savePack()"
+                [disabled]="selectedCardsFormControl.valid ? 'false' : 'true'">{{ savePackButtonLabel }}</button>
+        </div>
+    </header>
+    
+    
+    <form class="mt-5 flex flex-col gap-3 flex-wrap lg:flex-row">
+        <igx-input-group type="border" class="grow">
+            <input igxInput name="search" type="text" [formControl]="cardSearchFormControl" />
+            <label igxLabel for="search">Pesquisar por nome</label>
+        </igx-input-group>
+    
+        <igx-select type="border" [formControl]="cardTypeFormControl">
+            <label igxLabel>Tipo</label>
+            <igx-select-item [value]="">Selecione</igx-select-item>
+            @for (item of filterData.types; track $index) {
+                <igx-select-item [value]="item">{{ item }}</igx-select-item>
+            }
+        </igx-select>
+    
+        <igx-select type="border" [formControl]="cardSubtypeFormControl">
+            <label igxLabel>Subtipo</label>
+            <igx-select-item [value]="">Selecione</igx-select-item>
+            @for (item of filterData.subtypes; track $index) {
+                <igx-select-item [value]="item">{{ item }}</igx-select-item>
+            }
+        </igx-select>
+        <igx-select type="border" [formControl]="cardSupertypeFormControl">
+            <label igxLabel>Supertipo</label>
+            <igx-select-item [value]="">Selecione</igx-select-item>
+            @for (item of filterData.supertypes; track $index) {
+                <igx-select-item [value]="item">{{ item }}</igx-select-item>
+            }
+        </igx-select>
+        <igx-select type="border" [formControl]="cardRarityFormControl">
+            <label igxLabel>Raridade</label>
+            <igx-select-item [value]="">Selecione</igx-select-item>
+            @for (item of filterData.rarities; track $index) {
+                <igx-select-item [value]="item">{{ item }}</igx-select-item>
+            }
+        </igx-select>
+        <button igxButton="contained" igxRipple (click)="doFilter()">Pesquisar</button>
+    </form>
+}

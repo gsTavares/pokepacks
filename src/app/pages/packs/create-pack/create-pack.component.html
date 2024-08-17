@@ -17,63 +17,21 @@
                     igxButton="contained" igxRipple (click)="stepper.next()">Próximo</button>
             </div>
         </igx-step>
-        <igx-step #step2 [isValid]="selectedCardsFormControl.valid" [completed]="selectedCardsFormControl.valid">
+        <igx-step #packCardsStep [isValid]="selectedCardsFormControl.valid" [completed]="selectedCardsFormControl.valid">
             <span igxStepTitle>Cartas</span>
             <div igxStepContent [tabIndex]="-1" class="flex flex-col">
-                <header class="flex justify-between items-baseline">
-                    <div class="relative">
-                        <h3>Cartas</h3>
-                        <small>escolha suas cartas (mín. 24 máx. 60)</small>
-                        <button class="absolute top-10 left-[65%]"
-                            [ngClass]="{'bg-red-600': selectedCardsFormControl.invalid, 'bg-green-600': selectedCardsFormControl.valid}"
-                            igxIconButton="contained">{{ selectedCardsFormControl.value.length }}</button>
-                    </div>
-                    <div>
-                        <button igxButton="contained"
-                            (click)="createPack()"
-                            [disabled]="selectedCardsFormControl.valid ? 'false' : 'true'">Criar</button>
-                    </div>
-                </header>
-
-
-                <form class="mt-5 flex flex-col gap-3 flex-wrap lg:flex-row">
-                    <igx-input-group type="border" class="grow">
-                        <input igxInput name="search" type="text" [formControl]="cardSearchFormControl" />
-                        <label igxLabel for="search">Pesquisar por nome</label>
-                    </igx-input-group>
-
-                    <igx-select type="border" [formControl]="cardTypeFormControl">
-                        <label igxLabel>Type</label>
-                        <igx-select-item [value]="">Selecione</igx-select-item>
-                        @for (item of (data$ | async)?.types; track $index) {
-                            <igx-select-item [value]="item">{{ item }}</igx-select-item>
-                        }
-                    </igx-select>
-
-                    <igx-select type="border" [formControl]="cardSubtypeFormControl">
-                        <label igxLabel>Subtype</label>
-                        <igx-select-item [value]="">Selecione</igx-select-item>
-                        @for (item of (data$ | async)?.subtypes; track $index) {
-                            <igx-select-item [value]="item">{{ item }}</igx-select-item>
-                        }
-                    </igx-select>
-                    <igx-select type="border" [formControl]="cardSupertypeFormControl">
-                        <label igxLabel>Supertype</label>
-                        <igx-select-item [value]="">Selecione</igx-select-item>
-                        @for (item of (data$ | async)?.supertypes; track $index) {
-                            <igx-select-item [value]="item">{{ item }}</igx-select-item>
-                        }
-                    </igx-select>
-                    <igx-select type="border" [formControl]="cardRarityFormControl">
-                        <label igxLabel>Rarities</label>
-                        <igx-select-item [value]="">Selecione</igx-select-item>
-                        @for (item of (data$ | async)?.rarities; track $index) {
-                            <igx-select-item [value]="item">{{ item }}</igx-select-item>
-                        }
-                    </igx-select>
-                    <button igxButton="contained" igxRipple (click)="applyFilter()">Pesquisar</button>
-                </form>
-
+                <app-card-list-header
+                    [filterData$]="filterData$"
+                    [selectedCardsFormControl]="selectedCardsFormControl"
+                    [cardSearchFormControl]="cardSearchFormControl"
+                    [cardTypeFormControl]="cardTypeFormControl"
+                    [cardSubtypeFormControl]="cardSubtypeFormControl"
+                    [cardSupertypeFormControl]="cardSupertypeFormControl"
+                    [cardRarityFormControl]="cardRarityFormControl"
+                    savePackButtonLabel="Criar"
+                    (onSavePack)="createPack()"
+                    (onFilterReady)="applyFilter()">
+                </app-card-list-header>
 
                 <igx-snackbar [autoHide]="false" [positionSettings]="snackbarPositionSettings" [isVisible]="loading$ | async">Carregando...</igx-snackbar>
                 <igx-snackbar #validationSnackbar [positionSettings]="snackbarPositionSettings">{{ validationMessage }}</igx-snackbar>
@@ -81,51 +39,9 @@
                 @if(pokemonCards$ | async; as pokemonCards) {
                     <div class="grid grid-cols-1 lg:grid-cols-5 gap-5 mt-10">
                         @for (card of pokemonCards.cards; track $index) {
-                            <igx-card elevated>
-                                <igx-card-media>
-                                    <img [src]="card.images.large" loading="lazy" alt="pokemom image">
-                                </igx-card-media>
-                                <igx-card-header>
-                                    <h3 igxCardHeaderTitle>{{ card.name }}</h3>
-                                    <h5 igxCardHeaderSubtitle>{{ card.supertype }}</h5>
-                                </igx-card-header>
-                                <igx-card-content>
-                                    <section>
-                                        <small class="block">Types</small>
-                                        <div class="flex gap-3 flex-wrap">
-                                            @for (type of card.types; track $index) {
-                                                <igx-chip [selectable]="false" [removable]="false" class="hover:bg-transparent" [ngClass]="type.toLowerCase()">{{ type }}</igx-chip>
-                                            } @empty {
-                                                <igx-chip [selectable]="false" [removable]="false">N/A</igx-chip>
-                                            }
-                                        </div>
-                                    </section>
-                                    <section class="mt-3">
-                                        <small class="block">Subtypes</small>
-                                        <div class="flex gap-3 flex-wrap">
-                                            @for (subtype of card.subtypes; track $index) {
-                                                <igx-chip [selectable]="false" [removable]="false">{{ subtype }}</igx-chip>
-                                            } @empty {
-                                                <igx-chip [selectable]="false" [removable]="false">N/A</igx-chip>
-                                            }
-                                        </div>
-                                    </section>
-                                </igx-card-content>
-                                <igx-card-actions layout="justify">
-                                    @if (isCardAlreadySelected(card)) {
-                                        <button class="bg-red-600 hover:bg-red-400" igxButton="contained" igxRipple
-                                            (click)="removeCard(card.id)">
-                                            Remover
-                                            <igx-icon family="material">close</igx-icon>
-                                        </button>
-                                    } @else {
-                                        <button igxButton="contained" [disabled]="selectedCardsFormControl.value.length === 60 ? 'true' : 'false'" igxRipple (click)="selectCard(card)">
-                                            Adicionar
-                                            <igx-icon family="material">add</igx-icon>
-                                        </button>
-                                    }
-                                </igx-card-actions>
-                            </igx-card>
+                            <app-card-list-item [card]="card"
+                                [selectedCardsFormControl]="selectedCardsFormControl"
+                                (onCardSelectionFails)="showValidationMessage($event)"></app-card-list-item>
                         } @empty {
                             <div class="flex justify-center items-center lg:col-span-5">{{ (loading$ | async) ? '' : 'Nenhum registro encontrado!'}}</div>
                         }
@@ -140,7 +56,6 @@
                         [(page)]="page"
                         [totalRecords]="totalCount"
                         (pageChange)="fetchCards($event)">
-
                     </igx-paginator>
                 </footer>
             </div>

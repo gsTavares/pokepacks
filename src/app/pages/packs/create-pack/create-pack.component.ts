@@ -2,15 +2,14 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { IgxSnackbarComponent, PositionSettings, VerticalAlignment } from 'igniteui-angular';
+import { IgxSnackbarComponent } from 'igniteui-angular';
 import { combineLatest, map, Observable, tap } from 'rxjs';
 import { Pack } from '../../../models/pack.models';
 import { Pokemontcg } from '../../../models/pokemontcg.models';
 import { PacksActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from '../../../state/app.actions';
 import { loadingSelector, messageSelector, pokemonCardsSelector, pokemonRaritiesSelector, pokemonSubtypesSelector, pokemonSupertypesSelector, pokemonTypesSelector } from '../../../state/app.selectors';
-import { PokemonCardsState } from '../../../state/app.state';
-import { validateCardQuantity } from '../../../utils/validators/card-quantity.validator';
 import { snackbarPositionSettings } from '../../../utils/component-settings/snackbar.settings';
+import { validateCardQuantity } from '../../../utils/validators/card-quantity.validator';
 
 @Component({
   selector: 'app-create-pack',
@@ -49,8 +48,7 @@ export class CreatePackComponent implements OnInit {
   supertypes$ = this.store.select(pokemonSupertypesSelector);
   rarities$ = this.store.select(pokemonRaritiesSelector);
 
-  data$?: Observable<{
-    pokemonCards: PokemonCardsState,
+  filterData$?: Observable<{
     types: string[],
     subtypes: string[],
     supertypes: string[],
@@ -117,6 +115,11 @@ export class CreatePackComponent implements OnInit {
     const newValue = (this.selectedCardsFormControl.value as Pokemontcg[])
       .filter(c => c.id !== cardId);
     this.selectedCardsFormControl.patchValue(newValue);
+  }
+
+  showValidationMessage(message: string) {
+    this.validationMessage = message;
+    this.validationSnackbar.open();
   }
 
   fetchCards(event?: number) {
@@ -200,15 +203,13 @@ export class CreatePackComponent implements OnInit {
   }
 
   private subscribeToData() {
-    this.data$ = combineLatest([
-      this.pokemonCards$,
+    this.filterData$ = combineLatest([
       this.types$,
       this.subtypes$,
       this.supertypes$,
       this.rarities$
     ]).pipe(
-      map(([cards, types, subtypes, supertypes, rarities]) => ({
-        pokemonCards: cards,
+      map(([types, subtypes, supertypes, rarities]) => ({
         rarities: rarities,
         subtypes: subtypes,
         types: types,
