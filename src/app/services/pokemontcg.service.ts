@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { PokemontcgResponse } from '../models/pokemontcg.models';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,15 @@ export class PokemontcgService {
       }
     })
 
-    return this.http.get<PokemontcgResponse>(`${environment.target}/cards`, { params: reqParams });
+    return this.http.get<PokemontcgResponse>(`${environment.target}/cards`, { params: reqParams })
+      .pipe(map((response) => {
+        response.data.forEach(card => {
+          if(!card.types) {
+            card.types = ['N/A'];
+          }
+        });
+        return response;
+      }));
   }
 
   getTypes() {
