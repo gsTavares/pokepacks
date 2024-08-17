@@ -50,3 +50,125 @@
     --ig-surface-s: 15%;
     --ig-surface-l: 95%;
 }
+
+.colorless {
+    * {
+        background-color: #A8A77A!important;
+        color: white /* Beige */
+    }
+    *:hover {
+        opacity: .8;
+        background-color: #A8A77A!important;
+    }
+}
+
+.darkness {
+    * {
+        background-color: #705746!important;
+        color: white /* Dark Brown */
+    }
+    *:hover {
+        opacity: .8;
+        background-color: #705746!important;
+    }
+}
+
+.dragon {
+    * {
+        background-color: #6F35FC!important;
+        color: white /* Purple */
+    }
+    *:hover {
+        opacity: .8;
+        background-color: #6F35FC!important;
+    }
+}
+
+.fairy {
+    * {
+        background-color: #D685AD!important;
+        color: white /* Pink */
+    }
+    *:hover {
+        opacity: .8;
+        background-color: #D685AD!important;
+    }
+}
+
+.fighting {
+    * {
+        background-color: #C22E28!important;
+        color: white /* Red */
+    }
+    *:hover {
+        opacity: .8;
+        background-color: #C22E28!important;
+    }
+}
+
+.fire {
+    * {
+        background-color: #EE8130!important;
+        color: white /* Orange */
+    }
+    *:hover {
+        opacity: .8;
+        background-color: #EE8130!important;
+    }
+}
+
+.grass {
+    * {
+        background-color: #7AC74C!important;
+        color: white /* Green */
+    }
+    *:hover {
+        opacity: .8;
+        background-color: #7AC74C!important;
+    }
+}
+
+.lightning {
+    
+    * {
+        background-color: #F7D02C!important;
+        color: white /* Yellow */
+    }
+    *:hover {
+        opacity: .8;
+        background-color: #F7D02C!important;
+    }
+}
+
+.metal {
+    * {
+        background-color: #B7B7CE!important;
+        color: white /* Light Gray */
+    }
+    *:hover {
+        opacity: .8;
+        background-color: #B7B7CE!important;
+    }
+}
+
+.psychic {
+    * {
+        background-color: #F95587!important;
+        color: white /* Pinkish Red */
+    }
+    *:hover {
+        opacity: .8;
+        background-color: #F95587!important;
+    }
+}
+
+.water {
+    * {
+        background-color: #6390F0!important;
+        color: white /* Blue */
+    }
+    *:hover {
+        opacity: .8;
+        background-color: #6390F0!important;
+    }
+}

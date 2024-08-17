@@ -94,7 +94,7 @@
                                         <small class="block">Types</small>
                                         <div class="flex gap-3 flex-wrap">
                                             @for (type of card.types; track $index) {
-                                                <igx-chip [selectable]="false" [removable]="false">{{ type }}</igx-chip>
+                                                <igx-chip [selectable]="false" [removable]="false" class="hover:bg-transparent" [ngClass]="type.toLowerCase()">{{ type }}</igx-chip>
                                             } @empty {
                                                 <igx-chip [selectable]="false" [removable]="false">N/A</igx-chip>
                                             }
