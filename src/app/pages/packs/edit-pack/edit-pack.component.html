@@ -31,7 +31,8 @@
                         [cardRarityFormControl]="cardRarityFormControl"
                         savePackButtonLabel="Editar"
                         (onSavePack)="editPack()"
-                        (onFilterReady)="applyFilter()">
+                        (onFilterReady)="applyFilter()"
+                        (onCardNumberClick)="selectedCardsDialog.open()">
                     </app-card-list-header>
     
                     <igx-snackbar [autoHide]="false" [positionSettings]="snackbarPositionSettings" [isVisible]="loading$ | async">Carregando...</igx-snackbar>
@@ -62,6 +63,23 @@
                 </div>
             </igx-step>
         </igx-stepper>
+
+        <igx-dialog #selectedCardsDialog title="Cartas selecionadas"
+            [closeOnOutsideSelect]="true"
+            [closeOnEscape]="true"
+            rightButtonLabel="Fechar"
+            (rightButtonSelect)="selectedCardsDialog.close()">
+
+            <section class="max-h-[450px] max-w-[654px] overflow-y-auto grid grid-cols-1 lg:grid-cols-3 gap-5">
+                @for (card of selectedCardsFormControl.value; track $index) {
+                    <app-card-list-item [card]="card"
+                        [selectedCardsFormControl]="selectedCardsFormControl"></app-card-list-item>
+                } @empty {
+                    <div class="flex justify-center items-center lg:col-span-5">{{ (loading$ | async) ? '' : 'Nenhum registro encontrado!'}}</div>
+                }
+            </section>
+
+        </igx-dialog>
     </div>
 } @else {
     <igx-snackbar [autoHide]="false" [positionSettings]="snackbarPositionSettings" [isVisible]="loading$ | async">Carregando...</igx-snackbar>

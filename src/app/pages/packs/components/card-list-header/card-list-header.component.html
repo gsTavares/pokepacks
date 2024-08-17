@@ -1,8 +1,9 @@
 @if(filterData$ | async; as filterData) {
     <header class="flex justify-between items-baseline">
-        <div class="relative">
+        <div class="relative cursor-pointer" (click)="openSelectedCardsDialog()">
             <h3>Cartas</h3>
-            <small>escolha suas cartas (mín. 24 máx. 60)</small>
+            <small class="block">escolha suas cartas (mín. 24 máx. 60)</small>
+            <small class="block">clique aqui para visualizar as que já selecionou</small>
             <button class="absolute top-10 left-[65%]"
                 [ngClass]="{'bg-red-600': selectedCardsFormControl.invalid, 'bg-green-600': selectedCardsFormControl.valid}"
                 igxIconButton="contained">{{ selectedCardsFormControl.value.length }}</button>

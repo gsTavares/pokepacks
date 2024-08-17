@@ -43,6 +43,9 @@ export class CardListHeaderComponent {
 
   @Output()
   onFilterReady: EventEmitter<void> = new EventEmitter();
+  
+  @Output()
+  onCardNumberClick: EventEmitter<void> = new EventEmitter();
 
   savePack() {
     this.onSavePack.emit();
@@ -50,6 +53,10 @@ export class CardListHeaderComponent {
 
   doFilter() {
     this.onFilterReady.emit();
+  }
+
+  openSelectedCardsDialog() {
+    this.onCardNumberClick.emit();
   }
 
 }
