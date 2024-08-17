@@ -22,8 +22,8 @@
                 <igx-card-media>
                     <img [src]="firstCardImageOfMainType" loading="lazy">
                 </igx-card-media>
-                <section class="flex flex-col justify-between">
-                    <div>
+                <section class="grid grid-cols-1 items-center">
+                    <div class="h-full overflow-hidden max-h-[96px]">
                         <h3 class="text-white" igxCardHeaderTitle># {{ pack.id }}</h3>
                         <h5 class="text-white" igxCardHeaderSubtitle>{{ pack.name }}</h5>
                     </div>
