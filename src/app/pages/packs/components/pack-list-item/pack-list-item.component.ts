@@ -18,6 +18,9 @@ export class PackListItemComponent implements OnInit {
 
   packTypes: string[] = [];
 
+  pokemonQuantity: number = 0;
+  trainerQuantity: number = 0;
+
   constructor() {
 
   }
@@ -30,9 +33,17 @@ export class PackListItemComponent implements OnInit {
     let typeSet = new Set<string>();
 
     for(let card of this.pack.cards) {
+
+      if(card.supertype === 'Trainer') {
+        this.trainerQuantity++;
+      } else if(card.supertype === 'Pokémon') {
+        this.pokemonQuantity++;
+      }
+
       for(let type of card.types) {
         typeSet.add(type)
       }
+      
     }
 
     this.uniqueTypes = typeSet.size;

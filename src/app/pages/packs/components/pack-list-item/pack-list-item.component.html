@@ -42,13 +42,28 @@
         title="Detalhes do baralho">
         <div class="flex flex-col">
             <section>
-                <p>Cores</p>
-                <div class="flex flex-row gap-3">
+                <p class="m-0 font-bold text-xl">Cores (types)</p>
+                <div class="flex flex-row gap-3 mt-3 flex-wrap max-w-[400px]">
                     @for (type of packTypes; track $index) {
-                        <igx-chip [selectable]="false" [removable]="false" class="hover:bg-transparent" [ngClass]="type.toLowerCase()">{{ ' ' }}</igx-chip>
+                        <igx-chip [selectable]="false" [removable]="false" class="hover:bg-transparent" [ngClass]="type.toLowerCase()">{{ type }}</igx-chip>
                     }
                 </div>
             </section>
+            <section class="mt-3">
+                <div class="grid grid-cols-1 gap-3 lg:grid-cols-2">
+                    <div>
+                        <p class="m-0 font-bold text-xl">Pokémons</p>
+                        <p class="m-0">{{ pokemonQuantity }}</p>
+                    </div>
+                    <div>
+                        <p class="m-0 font-bold text-xl">Treinadores</p>
+                        <p class="m-0">{{ trainerQuantity }}</p>
+                    </div>
+                </div>
+            </section>
+            <footer igxDialogActions>
+                <button class="bg-red-600 hover:bg-red-600" igxRipple igxButton="contained" (click)="packDetails.close()">Fechar</button>
+            </footer>
         </div>
     </igx-dialog>
 </div>
