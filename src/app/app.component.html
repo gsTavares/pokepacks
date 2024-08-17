@@ -21,7 +21,7 @@
     </section>
   </main>
 
-  <igx-snackbar #globalMessagesSnackbar [positionSettings]="snackbarPositionSettings">{{ message$ | async }}</igx-snackbar>
+  <igx-snackbar #globalMessagesSnackbar [positionSettings]="snackbarPositionSettings" (closed)="resetMessageState()">{{ message$ | async }}</igx-snackbar>
 </div>
 
 

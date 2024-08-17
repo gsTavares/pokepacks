@@ -5,6 +5,7 @@ import { Route, Router } from '@angular/router';
 import { snackbarPositionSettings } from './utils/component-settings/snackbar.settings';
 import { Store } from '@ngrx/store';
 import { messageSelector } from './state/app.selectors';
+import { MessageActions } from './state/app.actions';
 
 @Component({
   selector: 'app-root',
@@ -41,10 +42,16 @@ export class AppComponent implements OnInit {
     this.drawer.close();
   }
 
+  resetMessageState() {
+    this.store.dispatch(MessageActions.setMessage({message: ''}));
+  }
+
   private subscribeToMessage() {
     this.message$.subscribe({
-      next: (_response) => {
-        this.globalMessagesSnackbar.open();
+      next: (response) => {
+        if(response) {
+          this.globalMessagesSnackbar.open();
+        }
       }
     })
   }

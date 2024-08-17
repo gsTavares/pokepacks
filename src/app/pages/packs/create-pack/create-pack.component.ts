@@ -65,6 +65,8 @@ export class CreatePackComponent implements OnInit {
 
   snackbarPositionSettings = snackbarPositionSettings;
 
+  submitted: boolean = false;
+
   constructor(
     private store: Store, 
     private router: Router
@@ -177,6 +179,8 @@ export class CreatePackComponent implements OnInit {
   }
 
   createPack() {
+    this.submitted = true;
+
     const payload: Pack = {
       name: this.packNameFormControl.value,
       cards: [...this.selectedCardsFormControl.value]
@@ -188,7 +192,7 @@ export class CreatePackComponent implements OnInit {
   private subscribeToMessage() {
     this.store.select(messageSelector).subscribe({
       next: (response) => {
-        if(response) {
+        if(response && this.submitted) {
           this.router.navigate(['packs/list']);
         }
       }
