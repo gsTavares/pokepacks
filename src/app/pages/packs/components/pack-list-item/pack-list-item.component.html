@@ -1,6 +1,6 @@
 <div class="relative">
     <div class="absolute -top-3 -right-3">
-        <button igxIconButton="contained">
+        <button igxIconButton="contained" class="bg-white">
             {{ pack.cards.length }}
         </button>
     </div>
@@ -8,6 +8,12 @@
         <button igxIconButton="contained" class="bg-red-600 hover:bg-red-400"
             (click)="deleteWarning.open()">
             <igx-icon class="text-white" family="material">delete</igx-icon>
+        </button>
+    </div>
+    <div class="absolute top-20 -right-3">
+        <button igxIconButton="contained" class="bg-blue-600 hover:bg-blue-400"
+            (click)="setSelectedPack()">
+            <igx-icon class="text-white" family="material">edit_square</igx-icon>
         </button>
     </div>
     <igx-card [horizontal]="true" class="grid grid-cols-1 lg:grid-cols-2 bg-zinc-900">
@@ -51,7 +57,7 @@
                 <p class="m-0 font-bold text-xl">Cores (types)</p>
                 <div class="flex flex-row gap-3 mt-3 flex-wrap max-w-[400px]">
                     @for (type of packTypes; track $index) {
-                        <igx-chip [selectable]="false" [removable]="false" class="hover:bg-transparent" [ngClass]="type.toLowerCase()">{{ type }}</igx-chip>
+                        <igx-chip [selectable]="false" [removable]="false" class="hover:bg-transparent" [ngClass]="type.name.toLowerCase()">{{ type.name + ' (' + type.quantity + ')' }}</igx-chip>
                     }
                 </div>
             </section>

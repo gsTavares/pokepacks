@@ -1,1 +1,75 @@
-<p>edit-pack works!</p>
+@if(selectedPack$ | async; as selectedPack) {
+    <div igxLayout>
+        <igx-stepper #stepper [linear]="true">
+            <igx-step #packNameStep [isValid]="packNameFormControl.valid" [completed]="packNameFormControl.valid">
+                <span igxStepTitle>Nome do baralho</span>
+                <div igxStepContent [tabIndex]="-1" class="flex flex-col">
+                    <h3>Editar baralho #{{ selectedPack.id }}</h3>
+                    <small>dê um nome ao baralho</small>
+    
+                    <form class="mt-5 flex flex-col gap-3 lg:flex-row">
+                        <igx-input-group type="border" class="grow">
+                            <input igxInput name="name" type="text" [formControl]="packNameFormControl" />
+                            <label igxLabel for="name">Nome do baralho</label>
+                        </igx-input-group>
+                    </form>
+    
+                    <button [disabled]="packNameStep.isValid ? 'false' : 'true'" class="self-end mt-10"
+                        igxButton="contained" igxRipple (click)="stepper.next()">Próximo</button>
+                </div>
+            </igx-step>
+            <igx-step #packCardsStep [isValid]="selectedCardsFormControl.valid" [completed]="selectedCardsFormControl.valid">
+                <span igxStepTitle>Cartas</span>
+                <div igxStepContent [tabIndex]="-1" class="flex flex-col">
+                    <app-card-list-header
+                        [filterData$]="filterData$"
+                        [selectedCardsFormControl]="selectedCardsFormControl"
+                        [cardSearchFormControl]="cardSearchFormControl"
+                        [cardTypeFormControl]="cardTypeFormControl"
+                        [cardSubtypeFormControl]="cardSubtypeFormControl"
+                        [cardSupertypeFormControl]="cardSupertypeFormControl"
+                        [cardRarityFormControl]="cardRarityFormControl"
+                        savePackButtonLabel="Editar"
+                        (onSavePack)="editPack()"
+                        (onFilterReady)="applyFilter()">
+                    </app-card-list-header>
+    
+                    <igx-snackbar [autoHide]="false" [positionSettings]="snackbarPositionSettings" [isVisible]="loading$ | async">Carregando...</igx-snackbar>
+                    <igx-snackbar #validationSnackbar [positionSettings]="snackbarPositionSettings">{{ validationMessage }}</igx-snackbar>
+    
+                    @if(pokemonCards$ | async; as pokemonCards) {
+                        <div class="grid grid-cols-1 lg:grid-cols-5 gap-5 mt-10">
+                            @for (card of pokemonCards.cards; track $index) {
+                                <app-card-list-item [card]="card"
+                                    [selectedCardsFormControl]="selectedCardsFormControl"
+                                    (onCardSelectionFails)="showValidationMessage($event)"></app-card-list-item>
+                            } @empty {
+                                <div class="flex justify-center items-center lg:col-span-5">{{ (loading$ | async) ? '' : 'Nenhum registro encontrado!'}}</div>
+                            }
+                        </div>
+                    }
+    
+                    <footer class="fixed bottom-0 w-full left-1/2 -translate-x-1/2">
+                        <igx-paginator
+                            [(perPage)]="pageSize"
+                            [selectOptions]="perPageOptions"
+                            (perPageChange)="page = 0; fetchCards()"
+                            [(page)]="page"
+                            [totalRecords]="totalCount"
+                            (pageChange)="fetchCards($event)">
+                        </igx-paginator>
+                    </footer>
+                </div>
+            </igx-step>
+        </igx-stepper>
+    </div>
+} @else {
+    <igx-snackbar [autoHide]="false" [positionSettings]="snackbarPositionSettings" [isVisible]="loading$ | async">Carregando...</igx-snackbar>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full flex flex-col items-center justify-center gap-5">
+        <div class="flex items-center justify-center gap-5">
+            <igx-icon family="material" class="text-5xl text-red-600 animate-pulse">warning</igx-icon>
+            <h3 class="m-0 animate-pulse">Você não selecionou nenhum baralho!</h3>
+        </div>
+        <button igxButton="outlined" igxRipple (click)="goBackToList()">Voltar</button>
+    </div>
+}

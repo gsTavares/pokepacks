@@ -1,7 +1,8 @@
 import { Component, Input, input, OnInit } from '@angular/core';
 import { Pack } from '../../../../models/pack.models';
 import { Store } from '@ngrx/store';
-import { PacksActions } from '../../../../state/app.actions';
+import { PacksActions, SelectedPackActions } from '../../../../state/app.actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pack-list-item',
@@ -18,12 +19,12 @@ export class PackListItemComponent implements OnInit {
 
   firstCardImageOfMainType: string = '';
 
-  packTypes: string[] = [];
+  packTypes: {name: string, quantity: number}[] = [];
 
   pokemonQuantity: number = 0;
   trainerQuantity: number = 0;
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private router: Router) {
 
   }
 
@@ -52,8 +53,11 @@ export class PackListItemComponent implements OnInit {
 
     let maxTypeCount = 0;
 
+    const typeSetMapped: {name: string, quantity: number}[] = [];
+
     for(let type of typeSet) {
       const quantityInPack = this.pack.cards.filter(c => c.types.includes(type)).length;
+      typeSetMapped.push({name: type, quantity: quantityInPack});
       if(quantityInPack > maxTypeCount) {
         maxTypeCount = quantityInPack;
         this.mainType = type;
@@ -62,12 +66,17 @@ export class PackListItemComponent implements OnInit {
 
     this.firstCardImageOfMainType = this.pack.cards.filter(c => c.types[0] === this.mainType)[0].images.large;
 
-    this.packTypes = [...typeSet];
+    this.packTypes = [...typeSetMapped];
 
   }
 
   deletePack() {
     this.store.dispatch(PacksActions.deletePack({packId: this.pack.id!}));
+  }
+
+  setSelectedPack() {
+    this.store.dispatch(SelectedPackActions.setSelectedPack({pack: this.pack}));
+    this.router.navigate(['packs/edit']);
   }
 
 }
