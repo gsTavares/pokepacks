@@ -20,6 +20,8 @@
       <router-outlet></router-outlet>
     </section>
   </main>
+
+  <igx-snackbar #globalMessagesSnackbar [positionSettings]="snackbarPositionSettings">{{ message$ | async }}</igx-snackbar>
 </div>
 
 

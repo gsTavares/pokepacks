@@ -16,6 +16,7 @@ type State = {
     selectedPack?: Pack,
 
     loading: boolean;
+    message: string
 }
 
 const initalState: State = {
@@ -27,7 +28,8 @@ const initalState: State = {
 
     packs: [],
 
-    loading: false
+    loading: false,
+    message: ''
 }
 
 export { State, initalState, PokemonCardsState };

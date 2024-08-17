@@ -16,6 +16,8 @@ export class PackListItemComponent implements OnInit {
 
   firstCardImageOfMainType: string = '';
 
+  packTypes: string[] = [];
+
   constructor() {
 
   }
@@ -46,6 +48,8 @@ export class PackListItemComponent implements OnInit {
     }
 
     this.firstCardImageOfMainType = this.pack.cards.filter(c => c.types[0] === this.mainType)[0].images.large;
+
+    this.packTypes = [...typeSet];
 
   }
 

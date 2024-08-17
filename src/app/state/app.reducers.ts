@@ -1,11 +1,11 @@
 import { createReducer, on } from "@ngrx/store";
-import { LoadingActions, PacksActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from "./app.actions";
+import { LoadingActions, MessageActions, PacksActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from "./app.actions";
 import { initalState } from "./app.state";
 import { Pack } from "../models/pack.models";
 
 const pokemonCardsReducer = createReducer(
     initalState,
-    on(PokemonCardsActions.getCards, (state, { cards, totalCount }) => ({
+    on(PokemonCardsActions.setCards, (state, { cards, totalCount }) => ({
         ...state,
         pokemonCards: {cards: cards, totalCount: totalCount},
         totalPokemonCardCount: totalCount
@@ -18,9 +18,6 @@ const pokemonCardsReducer = createReducer(
 
 const packsReducer = createReducer(
     initalState,
-    on(PacksActions.getAllPacks, (state, _) => ({
-        ...state
-    })),
     on(PacksActions.createPack, (state, { pack }) => {
         let toSave: Pack;
 
@@ -58,7 +55,7 @@ const packsReducer = createReducer(
 
 const pokemonTypesReducer = createReducer(
     initalState,
-    on(PokemonTypesActions.getPokemonTypes, (state, { pokemonTypes }) => ({
+    on(PokemonTypesActions.setPokemonTypes, (state, { pokemonTypes }) => ({
         ...state,
         pokemonTypes: pokemonTypes
     }))
@@ -66,7 +63,7 @@ const pokemonTypesReducer = createReducer(
 
 const pokemonSubtypesReducer = createReducer(
     initalState,
-    on(PokemonSubtypesActions.getPokemonSubtypes, (state, { pokemonSubtypes }) => ({
+    on(PokemonSubtypesActions.setPokemonSubtypes, (state, { pokemonSubtypes }) => ({
         ...state,
         pokemonSubtypes: pokemonSubtypes
     }))
@@ -74,7 +71,7 @@ const pokemonSubtypesReducer = createReducer(
 
 const pokemonSupertypesReducer = createReducer(
     initalState,
-    on(PokemonSupertypesActions.getPokemonSupertypes, (state, { pokemonSupertypes }) => ({
+    on(PokemonSupertypesActions.setPokemonSupertypes, (state, { pokemonSupertypes }) => ({
         ...state,
         pokemonSupertypes: pokemonSupertypes
     }))
@@ -82,7 +79,7 @@ const pokemonSupertypesReducer = createReducer(
 
 const pokemonRaritiesReducer = createReducer(
     initalState,
-    on(PokemonRaritiesActions.getPokemonRarities, (state, { pokemonRarities }) => ({
+    on(PokemonRaritiesActions.setPokemonRarities, (state, { pokemonRarities }) => ({
         ...state,
         pokemonRarities: pokemonRarities
     }))
@@ -96,4 +93,12 @@ const loadingReducer = createReducer(
     }))
 )
 
-export { loadingReducer, packsReducer, pokemonCardsReducer, pokemonRaritiesReducer, pokemonSubtypesReducer, pokemonSupertypesReducer, pokemonTypesReducer };
+const messageReducer = createReducer(
+    initalState,
+    on(MessageActions.setMessage, (state, { message }) => ({
+        ...state,
+        message: message
+    }))
+)
+
+export { loadingReducer, packsReducer, pokemonCardsReducer, pokemonRaritiesReducer, pokemonSubtypesReducer, pokemonSupertypesReducer, pokemonTypesReducer, messageReducer };

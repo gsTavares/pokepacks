@@ -31,10 +31,24 @@
             }
         </igx-card-content>
         <igx-card-actions class="lg:col-span-2 flex-row" layout="justify">
-            <button class="w-full" igxStart igxButton="contained" igxRipple>
+            <button class="w-full" igxStart igxButton="contained" igxRipple (click)="packDetails.open()">
                 Ver detalhes
                 <igx-icon family="material">receipt_long</igx-icon>
             </button>
         </igx-card-actions>
     </igx-card>
+
+    <igx-dialog #packDetails [closeOnOutsideSelect]="true"
+        title="Detalhes do baralho">
+        <div class="flex flex-col">
+            <section>
+                <p>Cores</p>
+                <div class="flex flex-row gap-3">
+                    @for (type of packTypes; track $index) {
+                        <igx-chip [selectable]="false" [removable]="false" class="hover:bg-transparent" [ngClass]="type.toLowerCase()">{{ ' ' }}</igx-chip>
+                    }
+                </div>
+            </section>
+        </div>
+    </igx-dialog>
 </div>

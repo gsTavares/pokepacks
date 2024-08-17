@@ -7,9 +7,10 @@ import { combineLatest, map, Observable, tap } from 'rxjs';
 import { Pack } from '../../../models/pack.models';
 import { Pokemontcg } from '../../../models/pokemontcg.models';
 import { PacksActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from '../../../state/app.actions';
-import { loadingSelector, packsSelector, pokemonCardsSelector, pokemonRaritiesSelector, pokemonSubtypesSelector, pokemonSupertypesSelector, pokemonTypesSelector } from '../../../state/app.selectors';
+import { loadingSelector, messageSelector, pokemonCardsSelector, pokemonRaritiesSelector, pokemonSubtypesSelector, pokemonSupertypesSelector, pokemonTypesSelector } from '../../../state/app.selectors';
 import { PokemonCardsState } from '../../../state/app.state';
 import { validateCardQuantity } from '../../../utils/validators/card-quantity.validator';
+import { snackbarPositionSettings } from '../../../utils/component-settings/snackbar.settings';
 
 @Component({
   selector: 'app-create-pack',
@@ -31,10 +32,6 @@ export class CreatePackComponent implements OnInit {
       this.totalCount = response.totalCount
     }
   }));
-
-  persistedPacks$ = this.store.select(packsSelector);
-
-  private _persistedPacksLastValue: Pack[] = [];
 
   // Pack name step
   packNameFormControl: FormControl = new FormControl('', Validators.required);
@@ -66,9 +63,7 @@ export class CreatePackComponent implements OnInit {
 
   validationMessage: string = '';
 
-  snackbarPositionSettings: PositionSettings = {
-    verticalDirection: VerticalAlignment.Top
-  }
+  snackbarPositionSettings = snackbarPositionSettings;
 
   constructor(
     private store: Store, 
@@ -79,7 +74,7 @@ export class CreatePackComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscribeToData();
-    this.subscribeToPacks();
+    this.subscribeToMessage();
     this.fetchCards();
     this.fetchTypes();
     this.fetchSubtypes();
@@ -190,16 +185,14 @@ export class CreatePackComponent implements OnInit {
     this.store.dispatch(PacksActions.createPack({ pack: payload }));
   }
 
-  private subscribeToPacks() {
-    this.persistedPacks$.subscribe({
+  private subscribeToMessage() {
+    this.store.select(messageSelector).subscribe({
       next: (response) => {
-        if(response.length > this._persistedPacksLastValue.length) {
+        if(response) {
           this.router.navigate(['packs/list']);
-          return;
         }
-        this._persistedPacksLastValue = response;
       }
-    })
+    });
   }
 
   private subscribeToData() {
