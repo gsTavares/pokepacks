@@ -1,6 +1,7 @@
 import { createReducer, on } from "@ngrx/store";
 import { LoadingActions, PacksActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from "./app.actions";
 import { initalState } from "./app.state";
+import { Pack } from "../models/pack.models";
 
 const pokemonCardsReducer = createReducer(
     initalState,
@@ -21,7 +22,7 @@ const packsReducer = createReducer(
         ...state
     })),
     on(PacksActions.createPack, (state, { pack }) => {
-        let toSave;
+        let toSave: Pack;
 
         if(state.packs.length === 0) {
             toSave = {
@@ -35,6 +36,8 @@ const packsReducer = createReducer(
                 id: lastPackId + 1
             }
         }
+
+        toSave.createdAt = new Date();
 
         return {
             ...state,
