@@ -9,7 +9,7 @@ import { map } from 'rxjs';
 })
 export class PokemontcgService {
 
-  private readonly _fields = 'id,name,supertype,types,subtypes,images,hp,rarity';
+  private readonly _fields = 'id,name,supertype,types,subtypes,images';
 
   constructor(private http: HttpClient) { }
 

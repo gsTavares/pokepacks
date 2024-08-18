@@ -1,15 +1,14 @@
 import { Component, ViewChild } from '@angular/core';
-import { IgxSnackbarComponent } from 'igniteui-angular';
-import { loadingSelector, messageSelector, pokemonCardsSelector, pokemonRaritiesSelector, pokemonSubtypesSelector, pokemonSupertypesSelector, pokemonTypesSelector, selectedPackSelector } from '../../../state/app.selectors';
-import { combineLatest, filter, map, Observable, tap } from 'rxjs';
 import { FormControl, Validators } from '@angular/forms';
-import { validateCardQuantity } from '../../../utils/validators/card-quantity.validator';
-import { snackbarPositionSettings } from '../../../utils/component-settings/snackbar.settings';
-import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
-import { Pokemontcg } from '../../../models/pokemontcg.models';
-import { PacksActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from '../../../state/app.actions';
+import { Store } from '@ngrx/store';
+import { IgxSnackbarComponent } from 'igniteui-angular';
+import { combineLatest, map, Observable, tap } from 'rxjs';
 import { Pack } from '../../../models/pack.models';
+import { PacksActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from '../../../state/app.actions';
+import { loadingSelector, messageSelector, pokemonCardsSelector, pokemonRaritiesSelector, pokemonSubtypesSelector, pokemonSupertypesSelector, pokemonTypesSelector, selectedPackSelector } from '../../../state/app.selectors';
+import { snackbarPositionSettings } from '../../../utils/component-settings/snackbar.settings';
+import { validateCardQuantity } from '../../../utils/validators/card-quantity.validator';
 
 @Component({
   selector: 'app-edit-pack',
@@ -21,8 +20,7 @@ export class EditPackComponent {
   @ViewChild('validationSnackbar', { read: IgxSnackbarComponent })
   validationSnackbar!: IgxSnackbarComponent
 
-  selectedPack$ = this.store.select(selectedPackSelector)
-    .pipe(filter((pack) => pack && pack.id !== undefined));
+  selectedPack$ = this.store.select(selectedPackSelector);
   selectedPackCopy?: Pack
 
   q: string = '';
@@ -85,41 +83,6 @@ export class EditPackComponent {
     this.fetchSubtypes();
     this.fetchSupertypes();
     this.fetchRarities();
-  }
-
-  isCardAlreadySelected(card: Pokemontcg): boolean {
-    const sCards = this.selectedCardsFormControl.value as Pokemontcg[];
-    if (sCards.length === 0) {
-      return false
-    }
-    return sCards.some(c => c.id === card.id);
-  }
-
-  selectCard(card: Pokemontcg) {
-    this.validationMessage = '';
-    const sCards = this.selectedCardsFormControl.value as Pokemontcg[];
-    const withSameNameOnPack = sCards.filter(c => c.name === card.name)
-      .map(_ => 1);
-
-    let quantity = 0;
-
-    if (withSameNameOnPack.length > 0) {
-      quantity = withSameNameOnPack.reduce((a, b) => a + b);
-    }
-
-    if (quantity === 4) {
-      this.validationMessage = 'Só podem ter 4 cartas com o mesmo nome no baralho';
-      this.validationSnackbar.open();
-      return;
-    }
-
-    this.selectedCardsFormControl.patchValue([...sCards, card]);
-  }
-
-  removeCard(cardId: string) {
-    const newValue = (this.selectedCardsFormControl.value as Pokemontcg[])
-      .filter(c => c.id !== cardId);
-    this.selectedCardsFormControl.patchValue(newValue);
   }
 
   showValidationMessage(message: string) {
@@ -206,9 +169,11 @@ export class EditPackComponent {
   private loadSelectedPackData() {
     this.selectedPack$.subscribe({
       next: (response) => {
-        this.packNameFormControl.patchValue(response.name);
-        this.selectedCardsFormControl.patchValue(response.cards);
-        this.selectedPackCopy = { ...response };
+        if(response) {
+          this.packNameFormControl.patchValue(response.name);
+          this.selectedCardsFormControl.patchValue(response.cards);
+          this.selectedPackCopy = { ...response };
+        }
       }
     })
   }

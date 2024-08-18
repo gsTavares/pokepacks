@@ -1,8 +1,8 @@
-import { Component, Input, input, OnInit } from '@angular/core';
-import { Pack } from '../../../../models/pack.models';
-import { Store } from '@ngrx/store';
-import { PacksActions, SelectedPackActions } from '../../../../state/app.actions';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Pack } from '../../../../models/pack.models';
+import { PacksActions, SelectedPackActions } from '../../../../state/app.actions';
 
 @Component({
   selector: 'app-pack-list-item',
@@ -29,6 +29,7 @@ export class PackListItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.pack);
     this.extractPackInfo();
   }
 

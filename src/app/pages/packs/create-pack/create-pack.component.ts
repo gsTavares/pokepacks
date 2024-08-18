@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { IgxSnackbarComponent } from 'igniteui-angular';
 import { combineLatest, map, Observable, tap } from 'rxjs';
 import { Pack } from '../../../models/pack.models';
-import { Pokemontcg } from '../../../models/pokemontcg.models';
 import { PacksActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from '../../../state/app.actions';
 import { loadingSelector, messageSelector, pokemonCardsSelector, pokemonRaritiesSelector, pokemonSubtypesSelector, pokemonSupertypesSelector, pokemonTypesSelector } from '../../../state/app.selectors';
 import { snackbarPositionSettings } from '../../../utils/component-settings/snackbar.settings';
@@ -80,41 +79,6 @@ export class CreatePackComponent implements OnInit {
     this.fetchSubtypes();
     this.fetchSupertypes();
     this.fetchRarities();
-  }
-
-  isCardAlreadySelected(card: Pokemontcg): boolean {
-    const sCards = this.selectedCardsFormControl.value as Pokemontcg[];
-    if (sCards.length === 0) {
-      return false
-    }
-    return sCards.some(c => c.id === card.id);
-  }
-
-  selectCard(card: Pokemontcg) {
-    this.validationMessage = '';
-    const sCards = this.selectedCardsFormControl.value as Pokemontcg[];
-    const withSameNameOnPack = sCards.filter(c => c.name === card.name)
-      .map(_ => 1);
-
-    let quantity = 0;
-
-    if (withSameNameOnPack.length > 0) {
-      quantity = withSameNameOnPack.reduce((a, b) => a + b);
-    }
-
-    if (quantity === 4) {
-      this.validationMessage = 'Só podem ter 4 cartas com o mesmo nome no baralho';
-      this.validationSnackbar.open();
-      return;
-    }
-
-    this.selectedCardsFormControl.patchValue([...sCards, card]);
-  }
-
-  removeCard(cardId: string) {
-    const newValue = (this.selectedCardsFormControl.value as Pokemontcg[])
-      .filter(c => c.id !== cardId);
-    this.selectedCardsFormControl.patchValue(newValue);
   }
 
   showValidationMessage(message: string) {

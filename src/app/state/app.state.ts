@@ -19,7 +19,7 @@ type State = {
     message: string
 }
 
-const initalState: State = {
+const initialState: State = {
     pokemonCards: {cards: [], totalCount: 0},
     pokemonRarities: [],
     pokemonSubtypes: [],
@@ -33,4 +33,4 @@ const initalState: State = {
     message: ''
 }
 
-export { State, initalState, PokemonCardsState };
+export { State, initialState, PokemonCardsState };

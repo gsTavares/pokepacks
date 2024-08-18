@@ -1,10 +1,10 @@
 import { createReducer, on } from "@ngrx/store";
 import { LoadingActions, MessageActions, PacksActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions, SelectedPackActions } from "./app.actions";
-import { initalState } from "./app.state";
+import { initialState } from "./app.state";
 import { Pack } from "../models/pack.models";
 
 const pokemonCardsReducer = createReducer(
-    initalState,
+    initialState,
     on(PokemonCardsActions.setCards, (state, { cards, totalCount }) => ({
         ...state,
         pokemonCards: {cards: cards, totalCount: totalCount},
@@ -17,7 +17,7 @@ const pokemonCardsReducer = createReducer(
 )
 
 const packsReducer = createReducer(
-    initalState,
+    initialState,
     on(PacksActions.createPackSuccessfully, (state, { pack }) => {
         let toSave: Pack;
 
@@ -59,7 +59,7 @@ const packsReducer = createReducer(
 )
 
 const pokemonTypesReducer = createReducer(
-    initalState,
+    initialState,
     on(PokemonTypesActions.setPokemonTypes, (state, { pokemonTypes }) => ({
         ...state,
         pokemonTypes: pokemonTypes
@@ -67,7 +67,7 @@ const pokemonTypesReducer = createReducer(
 )
 
 const pokemonSubtypesReducer = createReducer(
-    initalState,
+    initialState,
     on(PokemonSubtypesActions.setPokemonSubtypes, (state, { pokemonSubtypes }) => ({
         ...state,
         pokemonSubtypes: pokemonSubtypes
@@ -75,7 +75,7 @@ const pokemonSubtypesReducer = createReducer(
 )
 
 const pokemonSupertypesReducer = createReducer(
-    initalState,
+    initialState,
     on(PokemonSupertypesActions.setPokemonSupertypes, (state, { pokemonSupertypes }) => ({
         ...state,
         pokemonSupertypes: pokemonSupertypes
@@ -83,7 +83,7 @@ const pokemonSupertypesReducer = createReducer(
 )
 
 const pokemonRaritiesReducer = createReducer(
-    initalState,
+    initialState,
     on(PokemonRaritiesActions.setPokemonRarities, (state, { pokemonRarities }) => ({
         ...state,
         pokemonRarities: pokemonRarities
@@ -91,7 +91,7 @@ const pokemonRaritiesReducer = createReducer(
 )
 
 const loadingReducer = createReducer(
-    initalState,
+    initialState,
     on(LoadingActions.setLoading, (state, { loadingValue }) => ({
         ...state,
         loading: loadingValue
@@ -99,7 +99,7 @@ const loadingReducer = createReducer(
 )
 
 const messageReducer = createReducer(
-    initalState,
+    initialState,
     on(MessageActions.setMessage, (state, { message }) => ({
         ...state,
         message: message
@@ -107,7 +107,7 @@ const messageReducer = createReducer(
 )
 
 const selectedPackReducer = createReducer(
-    initalState,
+    initialState,
     on(SelectedPackActions.setSelectedPack, (state, { pack }) => ({
         ...state,
         selectedPack: pack

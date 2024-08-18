@@ -2,7 +2,7 @@ import { AbstractControl, ValidatorFn, Validators } from "@angular/forms";
 
 const validateCardQuantity = (): ValidatorFn => {
     return (control: AbstractControl) => {
-        if (!Array.isArray(control.value)) throw Error('invalid form control type!')
+        if (!Array.isArray(control.value)) Validators.required
 
         const value = control.value as any[]
 
