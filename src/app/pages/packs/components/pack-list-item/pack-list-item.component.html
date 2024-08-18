@@ -16,7 +16,7 @@
             <igx-icon class="text-white" family="material">edit_square</igx-icon>
         </button>
     </div>
-    <igx-card [horizontal]="true" class="grid grid-cols-1 lg:grid-cols-2 bg-zinc-900">
+    <igx-card [horizontal]="true" class="grid grid-cols-1 lg:grid-cols-2 h-full" [ngClass]="mainType.toLocaleLowerCase() + '-pack'">
         <igx-card-header class="lg:col-span-2">
             <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
                 <igx-card-media>
@@ -27,7 +27,7 @@
                         <h3 class="text-white" igxCardHeaderTitle># {{ pack.id }}</h3>
                         <h5 class="text-white" igxCardHeaderSubtitle>{{ pack.name }}</h5>
                     </div>
-                    <div>
+                    <div class="self-end">
                         <p class="font-bold m-0 text-white">Tipo principal</p>
                         <div class="flex">
                             <igx-chip [removable]="false" [selectable]="false" [ngClass]="mainType.toLowerCase()">{{ mainType }}</igx-chip>
@@ -37,9 +37,9 @@
             </div>
         </igx-card-header>
         <igx-card-content class="grid grid-cols-1 gap-1 lg:gap-3 lg:grid-cols-2 lg:col-span-2 text-white">
-            <p><b>Criado em: </b>{{ pack.createdAt | date: 'd/M/Y HH:mm:ss' }}</p>
+            <p><b>Criado em: </b>{{ pack.createdAt | date: 'd/MM/Y HH:mm:ss' }}</p>
             @if(pack.updatedAt) {
-                <p><b>Atualizado em:</b>{{ pack.updatedAt | date: 'd/M/Y HH:mm:ss' }}</p>
+                <p><b>Atualizado em: </b>{{ pack.updatedAt | date: 'd/MM/Y HH:mm:ss' }}</p>
             }
         </igx-card-content>
         <igx-card-actions class="lg:col-span-2 flex-row" layout="justify">
