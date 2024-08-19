@@ -29,7 +29,6 @@ export class PackListItemComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.pack);
     this.extractPackInfo();
   }
 
