@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { routes } from './pages/pages-routing.module';
 import { IgxNavigationDrawerComponent, IgxSnackbarComponent } from 'igniteui-angular';
 import { Route, Router } from '@angular/router';
@@ -6,13 +6,14 @@ import { snackbarPositionSettings } from './utils/component-settings/snackbar.se
 import { Store } from '@ngrx/store';
 import { messageSelector } from './state/app.selectors';
 import { MessageActions } from './state/app.actions';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
 
   @ViewChild(IgxNavigationDrawerComponent, {static: true})
   drawer!: IgxNavigationDrawerComponent
@@ -28,8 +29,14 @@ export class AppComponent implements OnInit {
 
   message$ = this.store.select(messageSelector);
 
+  unsub$: Subject<void> = new Subject();
+
   constructor(private router: Router, private store: Store) {
     this.activePage = this.pages[0].title as string
+  }
+  ngOnDestroy(): void {
+    this.unsub$.next();
+    this.unsub$.complete();
   }
 
   ngOnInit(): void {
@@ -47,7 +54,7 @@ export class AppComponent implements OnInit {
   }
 
   private subscribeToMessage() {
-    this.message$.subscribe({
+    this.message$.pipe(takeUntil(this.unsub$)).subscribe({
       next: (response) => {
         if(response) {
           this.globalMessagesSnackbar.open();

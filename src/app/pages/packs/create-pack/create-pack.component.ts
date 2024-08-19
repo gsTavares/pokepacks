@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { IgxSnackbarComponent } from 'igniteui-angular';
-import { combineLatest, map, Observable, tap } from 'rxjs';
+import { combineLatest, map, Observable, Subject, takeUntil, tap } from 'rxjs';
 import { Pack } from '../../../models/pack.models';
 import { PacksActions, PokemonCardsActions, PokemonRaritiesActions, PokemonSubtypesActions, PokemonSupertypesActions, PokemonTypesActions } from '../../../state/app.actions';
 import { loadingSelector, messageSelector, pokemonCardsSelector, pokemonRaritiesSelector, pokemonSubtypesSelector, pokemonSupertypesSelector, pokemonTypesSelector } from '../../../state/app.selectors';
@@ -15,7 +15,7 @@ import { validateCardQuantity } from '../../../utils/validators/card-quantity.va
   templateUrl: './create-pack.component.html',
   styleUrl: './create-pack.component.scss'
 })
-export class CreatePackComponent implements OnInit {
+export class CreatePackComponent implements OnInit, OnDestroy {
 
   @ViewChild('validationSnackbar', { read: IgxSnackbarComponent })
   validationSnackbar!: IgxSnackbarComponent
@@ -64,11 +64,18 @@ export class CreatePackComponent implements OnInit {
 
   submitted: boolean = false;
 
+  unsub$: Subject<void> = new Subject();
+
   constructor(
     private store: Store, 
     private router: Router
   ) {
 
+  }
+
+  ngOnDestroy(): void {
+    this.unsub$.next();
+    this.unsub$.complete();
   }
 
   ngOnInit(): void {
@@ -157,7 +164,7 @@ export class CreatePackComponent implements OnInit {
   }
 
   private subscribeToMessage() {
-    this.store.select(messageSelector).subscribe({
+    this.store.select(messageSelector).pipe(takeUntil(this.unsub$)).subscribe({
       next: (response) => {
         if(response && this.submitted) {
           this.router.navigate(['packs/list']);
