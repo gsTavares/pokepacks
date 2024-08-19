@@ -3,6 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NotFoundComponent } from './not-found.component';
 import { IgniteModule } from '../../libs/ignite/ignite.module';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideRouter, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 describe('NotFoundComponent', () => {
   let component: NotFoundComponent;
@@ -10,10 +12,11 @@ describe('NotFoundComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [IgniteModule],
+      imports: [CommonModule, IgniteModule, RouterModule],
       declarations: [NotFoundComponent],
       providers: [
-        provideAnimations()
+        provideAnimations(),
+        provideRouter([])
       ]
     })
     .compileComponents();
