@@ -9,7 +9,7 @@
     </div>
 
     <div class="grid grid-cols-1 gap-5 mt-5 lg:grid-cols-5">
-        @for (item of (packList$ | async); track $index) {
+        @for (item of (packList$ | async); track item.id) {
             <app-pack-list-item [pack]="item"></app-pack-list-item>
         }
     </div>

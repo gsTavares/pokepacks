@@ -16,7 +16,7 @@
             <igx-icon class="text-white" family="material">edit_square</igx-icon>
         </button>
     </div>
-    <igx-card [horizontal]="true" class="grid grid-cols-1 lg:grid-cols-2 h-full" [ngClass]="mainType.toLocaleLowerCase() + '-pack'">
+    <igx-card [horizontal]="true" class="grid grid-cols-1 lg:grid-cols-2 h-full" [ngClass]="mainType === 'N/A' ? 'bg-zinc-800' : mainType.toLowerCase() + '-pack'">
         <igx-card-header class="lg:col-span-2">
             <div class="grid grid-cols-1 gap-5 lg:grid-cols-2">
                 <igx-card-media>

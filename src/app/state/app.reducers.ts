@@ -7,12 +7,12 @@ const pokemonCardsReducer = createReducer(
     initialState,
     on(PokemonCardsActions.setCards, (state, { cards, totalCount }) => ({
         ...state,
-        pokemonCards: {cards: cards, totalCount: totalCount},
+        pokemonCards: { cards: cards, totalCount: totalCount },
         totalPokemonCardCount: totalCount
     })),
     on(PokemonCardsActions.clearCards, (state, _) => ({
         ...state,
-        pokemonCards: {cards: [], totalCount: 0}
+        pokemonCards: { cards: [], totalCount: 0 }
     }))
 )
 
@@ -21,7 +21,7 @@ const packsReducer = createReducer(
     on(PacksActions.createPackSuccessfully, (state, { pack }) => {
         let toSave: Pack;
 
-        if(state.packs.length === 0) {
+        if (state.packs.length === 0) {
             toSave = {
                 ...pack,
                 id: 1
@@ -42,9 +42,9 @@ const packsReducer = createReducer(
         };
     }),
     on(PacksActions.editPackSuccessfully, (state, { pack }) => {
-        const toEditIndex = pack.id! - 1;
-        
-        const packWithUpdatedAt: Pack = {...pack, updatedAt: new Date()};
+        const toEditIndex = state.packs.findIndex(p => p.id === pack.id!);
+
+        const packWithUpdatedAt: Pack = { ...pack, updatedAt: new Date() };
 
         return {
             ...state,
@@ -52,7 +52,7 @@ const packsReducer = createReducer(
             packs: [...state.packs.slice(0, toEditIndex), packWithUpdatedAt, ...state.packs.slice(toEditIndex + 1)]
         };
     }),
-    on(PacksActions.deletePackSuccessfully, (state, {packId}) => ({
+    on(PacksActions.deletePackSuccessfully, (state, { packId }) => ({
         ...state,
         packs: [...state.packs.filter(p => p.id !== packId)]
     }))
