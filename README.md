@@ -116,7 +116,7 @@ Para que o componente saiba quando ocorreu uma mudança de estado, são criados 
 
 Uma vez que o componente se inscreve em um seletor, mudanças no seu comportamento podem ser aplicadas.
 
-[Fluxo NgRx](docs/ngrxflow.png)
+![Fluxo NgRx](docs/ngrxflow.png)
 
 ## Execução do projeto
 
