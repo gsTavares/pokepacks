@@ -72,7 +72,7 @@ export class CreatePackComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscribeToFilterData();
+    this.mapFilterData();
     this.subscribeToMessage();
     this.fetchCards();
     this.fetchTypes();
@@ -166,7 +166,7 @@ export class CreatePackComponent implements OnInit {
     });
   }
 
-  private subscribeToFilterData() {
+  private mapFilterData() {
     this.filterData$ = combineLatest([
       this.types$,
       this.subtypes$,

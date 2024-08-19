@@ -76,7 +76,7 @@ export class EditPackComponent {
 
   ngOnInit(): void {
     this.loadSelectedPackData();
-    this.subscribeToFilterData();
+    this.mapFilterData();
     this.subscribeToMessage();
     this.fetchCards();
     this.fetchTypes();
@@ -188,7 +188,7 @@ export class EditPackComponent {
     });
   }
 
-  private subscribeToFilterData() {
+  private mapFilterData() {
     this.filterData$ = combineLatest([
       this.types$,
       this.subtypes$,
